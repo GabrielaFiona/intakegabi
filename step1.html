@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Onboarding - Gabriela Fiona</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+<div id="floating-widget" class="collapsed">
+    <div class="fw-header" onclick="toggleWidget()">
+        <span>ESTIMATED TOTAL</span>
+        <span id="fw-header-total">$0</span>
+    </div>
+    <div class="fw-content">
+        <div id="fw-items">
+            <p style="font-size:0.8rem; color:#666; font-style:italic;">Items added will appear here...</p>
+        </div>
+        <div class="fw-total">
+            <span>Total</span>
+            <span id="fw-full-total">$0</span>
+        </div>
+        <div style="font-size: 0.75rem; color: #555; margin-top: 5px; text-align: right;">
+            50% Deposit: <span id="fw-deposit">$0</span>
+        </div>
+    </div>
+</div>
+
+<div class="progress-header">
+    <div class="progress-bar">
+        <div class="progress-line-bg"></div>
+        <div class="progress-line-fill" id="progress-fill"></div>
+        
+        <div class="step-indicator active" id="step-ind-1">1 <div class="step-label">Intake</div></div>
+        <div class="step-indicator" id="step-ind-2">2 <div class="step-label">Roadmap</div></div>
+        <div class="step-indicator" id="step-ind-3">3 <div class="step-label">Quote</div></div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div id="step-1" class="step-section active">
+        
+        <div class="welcome-grid">
+            <div class="welcome-text">
+                <h1>Welcome.</h1>
+                <p>We’re going to build your roadmap together. My goal for this call is to get clear on your vision and create a plan that feels simple, strategic, and completely "you."</p>
+                <p>No jargon, no confusion—just a clear path forward.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>1. The Business Context</h4>
+                    <p>Understanding where you are now and where you want to go.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2. Scope & Strategy</h4>
+                    <p>Selecting the exact features and support you need.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>3. The Plan</h4>
+                    <p>Reviewing the investment and timeline to get us started.</p>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 40px 0;">
+
+        <div class="intake-section">
+            <div style="margin-bottom: 30px;">
+                <h2>Client Essentials</h2>
+                <p style="font-size: 0.9rem; color: var(--text-light); opacity: 0.7;">
+                    *I've saved your progress automatically. You can fill this out before the call.*
+                </p>
+            </div>
+
+            <div class="intake-card">
+                <div class="form-grid">
+                    <div>
+                        <label>Client Name</label>
+                        <input type="text" id="clientName" class="save-me" placeholder="Jane Doe">
+                    </div>
+                    <div>
+                        <label>Business / Brand Name</label>
+                        <input type="text" id="businessName" class="save-me" placeholder="Studio LLC">
+                    </div>
+
+                    <div>
+                        <label>Email Address</label>
+                        <input type="email" id="clientEmail" class="save-me" placeholder="jane@studio.com">
+                    </div>
+                    <div>
+                        <label>Phone Number</label>
+                        <input type="tel" id="clientPhone" class="save-me" placeholder="(555) 123-4567">
+                    </div>
+
+                    <div>
+                        <label>Current Website URL (If applicable)</label>
+                        <input type="text" id="clientUrl" class="save-me" placeholder="www.currentsite.com">
+                    </div>
+                    <div>
+                        <label>Industry</label>
+                        <input type="text" id="clientIndustry" class="save-me" placeholder="e.g. Interior Design">
+                    </div>
+
+                    <div class="full-width">
+                        <label>Main Business Goal</label>
+                        <select id="mainGoal" class="save-me">
+                            <option value="" disabled selected>Select the primary objective...</option>
+                            <option value="Fully custom site + systems">Fully custom site + systems</option>
+                            <option value="Professional Design Upgrade">Professional Design Upgrade</option>
+                            <option value="Simple Online Presence">Simple Online Presence</option>
+                            <option value="Fix/organize current systems">Fix/organize current systems</option>
+                        </select>
+                    </div>
+
+                    <div class="full-width">
+                        <label>Specific Business Objective (Custom)</label>
+                        <textarea id="customGoal" rows="3" class="save-me" placeholder="Is there a specific nuance to their goal? (e.g. 'Wants to move away from Etsy to own site')"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 30px; gap: 15px;">
+                <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+                <button class="btn btn-primary" onclick="nextStep(2)">Next: Build the Scope &rarr;</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="step-2" class="step-section">
+        <h2>Step 2: The Scope</h2>
+        <p>We will build this section next...</p>
+        <button class="btn btn-secondary" onclick="nextStep(1)">Back</button>
+    </div>
+
+    <div id="step-3" class="step-section">
+        <h2>Step 3: Quote</h2>
+        <p>We will build this section next...</p>
+        <button class="btn btn-secondary" onclick="nextStep(2)">Back</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script> 
+
+<script>
+    // --- STATE MANAGEMENT ---
+    let currentStep = 1;
+
+    // --- AUTO-SAVE LOGIC ---
+    document.addEventListener("DOMContentLoaded", function() {
+        const savedInputs = document.querySelectorAll(".save-me");
+        savedInputs.forEach(input => {
+            const savedValue = localStorage.getItem(input.id);
+            if (savedValue) {
+                input.value = savedValue;
+            }
+            input.addEventListener("input", function() {
+                localStorage.setItem(this.id, this.value);
+            });
+        });
+    });
+
+    function resetForm() {
+        if(confirm("Are you sure you want to clear all client data?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    // --- NAVIGATION ---
+    function nextStep(step) {
+        if (currentStep === 1 && step === 2) {
+            const name = document.getElementById('clientName').value;
+            if(!name) { alert("Please enter at least the Client Name to proceed."); return; }
+        }
+
+        document.querySelector(`#step-${currentStep}`).classList.remove('active');
+        document.querySelector(`#step-ind-${currentStep}`).classList.remove('active');
+        
+        if (step > currentStep) {
+             document.querySelector(`#step-ind-${currentStep}`).classList.add('completed');
+        }
+
+        currentStep = step;
+        document.querySelector(`#step-${currentStep}`).classList.add('active');
+        document.querySelector(`#step-ind-${currentStep}`).classList.add('active');
+
+        const percent = (step - 1) * 50;
+        document.getElementById('progress-fill').style.width = percent + '%';
+
+        window.scrollTo(0,0);
+    }
+
+    function toggleWidget() {
+        document.getElementById('floating-widget').classList.toggle('collapsed');
+    }
+</script>
+
+</body>
+</html>
