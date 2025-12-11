@@ -266,9 +266,10 @@ select option {
 
 /* New container for step navigation buttons */
 .step-nav-buttons {
-    display: flex;
+display: flex;
+    /* FIX: Added gap for spacing between buttons */
+    gap: 15px; 
     justify-content: space-between;
-    /* FIX: Added margin here instead of on .btn */
     margin-top: 50px; 
 }
 
