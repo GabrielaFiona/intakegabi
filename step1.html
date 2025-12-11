@@ -63,7 +63,7 @@
                 <div class="timeline-item">
                     <h4>2. Scope & Strategy</h4>
                     <p>Selecting the exact features and support you need.</p>
-                </div>
+                </p>
                 <div class="timeline-item">
                     <h4>3. The Plan</h4>
                     <p>Reviewing the investment and timeline to get us started.</p>
@@ -185,6 +185,7 @@
         const goal = document.getElementById('mainGoal').value;
         const goalDisplay = document.getElementById('fw-goal-display');
         
+        // Check if goal has a non-empty value (i.e., not the placeholder)
         if (goal && goal !== 'Select the primary objective...') {
             goalDisplay.innerText = "Goal: " + goal;
             goalDisplay.style.display = 'block';
@@ -207,88 +208,6 @@
             if(!name) { alert("Please enter at least the Client Name to proceed."); return; }
         }
         
-        // This is a crucial block for package switching
-        // It ensures that even if you jump back to Step 2, you land on the right package/addon state
-        if (step < currentStep) {
-            // Going back, just remove 'completed' status from the step you are leaving
-            document.querySelector(`#step-ind-${currentStep}`).classList.remove('completed');
-        } else if (step > currentStep) {
-            // Going forward, mark current step as completed
-            document.querySelector(`#step-ind-${currentStep}`).classList.add('completed');
-        }
-
-        document.querySelector(`#step-${currentStep}`).classList.remove('active');
-        document.querySelector(`#step-ind-${currentStep}`).classList.remove('active');
-        
-        currentStep = step;
-        document.querySelector(`#step-${currentStep}`).classList.add('active');
-        document.querySelector(`#step-ind-${currentStep}`).classList.add('active');
-
-        // Progress bar calculation for 4 steps: 0, 33.33, 66.66, 100
-        const percent = (step - 1) * (100 / 3);
-        document.getElementById('progress-fill').style.width = percent + '%';
-
-        window.scrollTo(0,0);
-    }
-
-    function toggleWidget() {
-        document.getElementById('floating-widget').classList.toggle('collapsed');
-    }
-    <script src="script.js"></script> 
-
-<script>
-    // --- STATE MANAGEMENT ---
-    let currentStep = 1;
-
-    // --- AUTO-SAVE LOGIC & GOAL TRACKER ---
-    document.addEventListener("DOMContentLoaded", function() {
-        const savedInputs = document.querySelectorAll(".save-me");
-        savedInputs.forEach(input => {
-            const savedValue = localStorage.getItem(input.id);
-            if (savedValue) {
-                input.value = savedValue;
-            }
-            input.addEventListener("input", function() {
-                localStorage.setItem(this.id, this.value);
-                if (this.classList.contains('goal-tracker')) {
-                    updateGoalTracker();
-                }
-            });
-        });
-
-        // Initialize goal tracker on load
-        updateGoalTracker();
-    });
-
-    function updateGoalTracker() {
-        const goal = document.getElementById('mainGoal').value;
-        const goalDisplay = document.getElementById('fw-goal-display');
-        
-        // This is the core logic you are updating:
-        // It checks if a goal is selected AND that goal is not the empty placeholder value
-        if (goal && goal !== 'Select the primary objective...') {
-            goalDisplay.innerText = "Goal: " + goal;
-            goalDisplay.style.display = 'block';
-        } else {
-            goalDisplay.style.display = 'none';
-        }
-    }
-
-    function resetForm() {
-        if(confirm("Are you sure you want to clear all client data?")) {
-            localStorage.clear();
-            location.reload();
-        }
-    }
-
-    // --- NAVIGATION ---
-    function nextStep(step) {
-        if (currentStep === 1 && step === 2) {
-            const name = document.getElementById('clientName').value;
-            if(!name) { alert("Please enter at least the Client Name to proceed."); return; }
-        }
-        
-        // State Preservation Logic (to handle back/forward correctly)
         if (step < currentStep) {
             document.querySelector(`#step-ind-${currentStep}`).classList.remove('completed');
         } else if (step > currentStep) {
@@ -302,18 +221,15 @@
         document.querySelector(`#step-${currentStep}`).classList.add('active');
         document.querySelector(`#step-ind-${currentStep}`).classList.add('active');
 
-        // Progress bar calculation for 4 steps: 0, 33.33, 66.66, 100
         const percent = (step - 1) * (100 / 3);
         document.getElementById('progress-fill').style.width = percent + '%';
 
         window.scrollTo(0,0);
     }
 
-    // This function is also called by the main script
     function toggleWidget() {
         document.getElementById('floating-widget').classList.toggle('collapsed');
     }
-</script>
 </script>
 
 </body>
