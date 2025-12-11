@@ -283,14 +283,17 @@ select option {
     color: var(--bg-dark); /* This sets the *default* text color for the widget content */
     ...
 }
+/* style.css - FINAL CORRECTED WIDGET HEADER STYLES */
+
 .fw-header {
-    background: #dcdfe0;
-    color: var(--bg-dark); /* This sets the header's text color to dark (#03030B) */
+    background: #dcdfe0; 
+    color: var(--bg-dark); /* Ensures text is dark */
     padding: 15px 20px;
     display: flex;
-    justify-content: center; /* Set to center as requested */
-    gap: 15px; 
+    /* Use gap and flexbox centering */
+    justify-content: center; 
     align-items: center;
+    gap: 10px; /* Space between the label and the total */
     cursor: pointer;
     font-family: var(--font-body);
     font-size: 0.8rem;
@@ -298,7 +301,22 @@ select option {
     letter-spacing: 1px;
     border-bottom: 1px solid #ccc;
 }
-*/
+
+/* Also ensure the goal display style is not blue, but dark */
+.fw-goal {
+    font-size: 0.7rem;
+    color: #444; /* Dark gray for subtle contrast on light background */
+    font-weight: 500;
+    margin: 5px 20px 10px 20px; /* Add horizontal padding to match fw-content */
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.9;
+}
 .fw-content { padding: 20px; max-height: 400px; overflow-y: auto; }
 .fw-item { 
     display: flex; 
