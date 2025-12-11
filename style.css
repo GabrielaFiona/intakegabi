@@ -276,12 +276,20 @@ select option {
 }
 #floating-widget.collapsed { transform: translateY(calc(100% - 50px)); }
 
+/* --- EXISTING FLOATING WIDGET STYLES (for context) ---
+#floating-widget {
+    ...
+    background: var(--text-light); 
+    color: var(--bg-dark); /* This sets the *default* text color for the widget content */
+    ...
+}
 .fw-header {
-    background: #dcdfe0; /* Slightly darker grey for header distinction */
-    color: var(--bg-dark);
+    background: #dcdfe0;
+    color: var(--bg-dark); /* This sets the header's text color to dark (#03030B) */
     padding: 15px 20px;
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Set to center as requested */
+    gap: 15px; 
     align-items: center;
     cursor: pointer;
     font-family: var(--font-body);
@@ -290,6 +298,7 @@ select option {
     letter-spacing: 1px;
     border-bottom: 1px solid #ccc;
 }
+*/
 .fw-content { padding: 20px; max-height: 400px; overflow-y: auto; }
 .fw-item { 
     display: flex; 
