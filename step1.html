@@ -13,14 +13,13 @@
 </head>
 <body>
 
-<!-- FLOATING INVOICE WIDGET (shared with Step 2) -->
+<!-- FLOATING INVOICE WIDGET (shared) -->
 <div id="floating-widget" class="collapsed">
     <div class="fw-header" onclick="toggleWidget()">
         <span>ESTIMATED TOTAL</span>
         <span id="fw-header-total">$0</span>
     </div>
-    <div class="fw-goal" id="fw-goal-display" style="display: none;"></div>
-
+    <div class="fw-goal" id="fw-goal-display" style="display:none;"></div>
     <div class="fw-content">
         <div id="fw-items">
             <p style="font-size:0.8rem; color:#666; font-style:italic;">Items added will appear here...</p>
@@ -29,7 +28,7 @@
             <span>Total</span>
             <span id="fw-full-total">$0</span>
         </div>
-        <div style="font-size: 0.75rem; color: #555; margin-top: 5px; text-align: right;">
+        <div class="fw-deposit">
             50% Deposit: <span id="fw-deposit">$0</span>
         </div>
     </div>
@@ -39,8 +38,7 @@
 <div class="progress-header">
     <div class="progress-bar">
         <div class="progress-line-bg"></div>
-        <!-- Step 1 = 0% of 3 intervals -->
-        <div class="progress-line-fill" id="progress-fill" style="width: 0%;"></div>
+        <div class="progress-line-fill" id="progress-fill" style="width:0%;"></div>
 
         <div class="step-indicator active" id="step-ind-1">
             1 <div class="step-label">Business Goals</div>
@@ -57,7 +55,6 @@
     </div>
 </div>
 
-<!-- PAGE CONTENT -->
 <div class="container">
     <div id="step-1" class="step-section active">
 
@@ -73,7 +70,7 @@
                     <p>Understanding where you are now and where you want to go.</p>
                 </div>
                 <div class="timeline-item">
-                    <h4>2. Scope & Strategy</h4>
+                    <h4>2. Scope &amp; Strategy</h4>
                     <p>Selecting the exact features and support you need.</p>
                 </div>
                 <div class="timeline-item">
@@ -83,14 +80,12 @@
             </div>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid var(--border); margin: 40px 0;">
+        <hr style="border:0; border-top:1px solid var(--border); margin:40px 0;" />
 
         <div class="intake-section">
-            <div style="margin-bottom: 30px;">
+            <div style="margin-bottom:30px;">
                 <h2>Client Essentials</h2>
-                <p style="font-size: 0.9rem; color: var(--text-light); opacity: 0.7;">
-                    *I've saved your progress automatically. You can fill this out before the call.*
-                </p>
+                <p style="font-size:0.9rem; color:var(--text-light); opacity:0.7;">*I've saved your progress automatically. You can fill this out before the call.*</p>
             </div>
 
             <div class="intake-card">
@@ -103,7 +98,6 @@
                         <label>Business / Brand Name</label>
                         <input type="text" id="businessName" class="save-me" placeholder="Studio LLC">
                     </div>
-
                     <div>
                         <label>Email Address</label>
                         <input type="email" id="clientEmail" class="save-me" placeholder="jane@studio.com">
@@ -112,7 +106,6 @@
                         <label>Phone Number</label>
                         <input type="tel" id="clientPhone" class="save-me" placeholder="(555) 123-4567">
                     </div>
-
                     <div>
                         <label>Current Website URL (If applicable)</label>
                         <input type="text" id="clientUrl" class="save-me" placeholder="www.currentsite.com">
@@ -121,7 +114,6 @@
                         <label>Industry</label>
                         <input type="text" id="clientIndustry" class="save-me" placeholder="e.g. Interior Design">
                     </div>
-
                     <div class="full-width">
                         <label>Main Business Goal</label>
                         <select id="mainGoal" class="save-me goal-tracker">
@@ -132,7 +124,6 @@
                             <option value="Fix/organize current systems">Fix/organize current systems</option>
                         </select>
                     </div>
-
                     <div class="full-width">
                         <label>Specific Business Objective (Custom)</label>
                         <textarea id="customGoal" rows="3" class="save-me" placeholder="Is there a specific nuance to their goal? (e.g. 'Wants to move away from Etsy to own site')"></textarea>
@@ -140,29 +131,27 @@
                 </div>
             </div>
 
-            <div class="step-nav-buttons" style="justify-content: flex-end; gap: 15px;">
-                <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
-                <button class="btn btn-primary" onclick="nextStep(2)">Next: Build Structure &rarr;</button>
+            <div class="step-nav-buttons" style="justify-content:flex-end;">
+                <button class="btn btn-secondary" type="button" onclick="resetForm()">Reset Form</button>
+                <button class="btn btn-primary" type="button" onclick="nextStep(2)">Next: Build Structure &rarr;</button>
             </div>
         </div>
 
     </div>
 </div>
 
-<!-- SHARED JS -->
 <script src="script.js"></script>
-
-<!-- STEP 1–SPECIFIC JS (autosave + goal tracker) -->
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // 1. Restore saved intake values from localStorage
-    const savedInputs = document.querySelectorAll(".save-me");
-    savedInputs.forEach(input => {
-        const savedValue = localStorage.getItem(input.id);
-        if (savedValue) {
-            input.value = savedValue;
+// STEP 1 – autosave & goal tracker
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Bring back any saved intake values
+    const inputs = document.querySelectorAll('.save-me');
+    inputs.forEach(input => {
+        const saved = localStorage.getItem(input.id);
+        if (saved !== null) {
+            input.value = saved;
         }
-        input.addEventListener("input", function() {
+        input.addEventListener('input', function () {
             localStorage.setItem(this.id, this.value);
             if (this.classList.contains('goal-tracker')) {
                 updateGoalTracker();
@@ -170,10 +159,9 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // 2. Initialize goal tracker
     updateGoalTracker();
 
-    // 3. Load shared invoice state so the widget reflects any Step 2 choices
+    // 2. Load shared onboarding state for the widget totals
     if (window.loadState) {
         window.loadState();
     }
@@ -183,16 +171,14 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function updateGoalTracker() {
-    const goalSelect = document.getElementById('mainGoal');
+    const selectEl = document.getElementById('mainGoal');
     const goalDisplay = document.getElementById('fw-goal-display');
-    if (!goalSelect || !goalDisplay) return;
+    if (!selectEl || !goalDisplay) return;
 
-    const goal = goalSelect.value;
-
-    if (goal && goal !== "") {
-        goalDisplay.innerText = "Goal: " + goal;
+    const goal = selectEl.value;
+    if (goal) {
+        goalDisplay.textContent = 'Goal: ' + goal;
         goalDisplay.style.display = 'block';
-        // Also persist this so Step 2+ can show it
         localStorage.setItem('mainGoal', goal);
     } else {
         goalDisplay.style.display = 'none';
@@ -201,9 +187,16 @@ function updateGoalTracker() {
 }
 
 function resetForm() {
-    if (confirm("Are you sure you want to clear all client data and selections?")) {
-        // Clear everything (intake + packages + invoice)
-        localStorage.clear();
+    if (confirm('Are you sure you want to clear all client data and selections?')) {
+        localStorage.removeItem('clientName');
+        localStorage.removeItem('businessName');
+        localStorage.removeItem('clientEmail');
+        localStorage.removeItem('clientPhone');
+        localStorage.removeItem('clientUrl');
+        localStorage.removeItem('clientIndustry');
+        localStorage.removeItem('mainGoal');
+        localStorage.removeItem('customGoal');
+        localStorage.removeItem('onboardingState');
         location.reload();
     }
 }
