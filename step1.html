@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <div class="step-nav-buttons" style="justify-content: flex-end; margin-top: 30px; gap: 15px;">
+            <div class="step-nav-buttons" style="justify-content: flex-end;">
                 <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
                 <button class="btn btn-primary" onclick="nextStep(2)">Next: Build Structure &rarr;</button>
             </div>
@@ -193,7 +193,8 @@
         const goal = document.getElementById('mainGoal').value;
         const goalDisplay = document.getElementById('fw-goal-display');
         
-        if (goal && goal !== 'Select the primary objective...') {
+        // FIX: Now checking against empty string value ("") which is set in the HTML for the placeholder option.
+        if (goal && goal !== "") {
             goalDisplay.innerText = "Goal: " + goal;
             goalDisplay.style.display = 'block';
         } else {
