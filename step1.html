@@ -17,6 +17,8 @@
         <span>ESTIMATED TOTAL</span>
         <span id="fw-header-total">$0</span>
     </div>
+    <div class="fw-goal" id="fw-goal-display" style="display: none;"></div>
+    
     <div class="fw-content">
         <div id="fw-items">
             <p style="font-size:0.8rem; color:#666; font-style:italic;">Items added will appear here...</p>
@@ -36,9 +38,10 @@
         <div class="progress-line-bg"></div>
         <div class="progress-line-fill" id="progress-fill"></div>
         
-        <div class="step-indicator active" id="step-ind-1">1 <div class="step-label">Intake</div></div>
-        <div class="step-indicator" id="step-ind-2">2 <div class="step-label">Roadmap</div></div>
-        <div class="step-indicator" id="step-ind-3">3 <div class="step-label">Quote</div></div>
+        <div class="step-indicator active" id="step-ind-1">1 <div class="step-label">Business Goals</div></div>
+        <div class="step-indicator" id="step-ind-2">2 <div class="step-label">Build Structure</div></div>
+        <div class="step-indicator" id="step-ind-3">3 <div class="step-label">Action Plan</div></div>
+        <div class="step-indicator" id="step-ind-4">4 <div class="step-label">Finalize Plan</div></div>
     </div>
 </div>
 
@@ -109,7 +112,7 @@
 
                     <div class="full-width">
                         <label>Main Business Goal</label>
-                        <select id="mainGoal" class="save-me">
+                        <select id="mainGoal" class="save-me goal-tracker">
                             <option value="" disabled selected>Select the primary objective...</option>
                             <option value="Fully custom site + systems">Fully custom site + systems</option>
                             <option value="Professional Design Upgrade">Professional Design Upgrade</option>
@@ -127,21 +130,27 @@
 
             <div style="display: flex; justify-content: flex-end; margin-top: 30px; gap: 15px;">
                 <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
-                <button class="btn btn-primary" onclick="nextStep(2)">Next: Build the Scope &rarr;</button>
+                <button class="btn btn-primary" onclick="nextStep(2)">Next: Build Structure &rarr;</button>
             </div>
         </div>
     </div>
 
     <div id="step-2" class="step-section">
-        <h2>Step 2: The Scope</h2>
+        <h2>Step 2: Build Structure</h2>
         <p>We will build this section next...</p>
         <button class="btn btn-secondary" onclick="nextStep(1)">Back</button>
     </div>
 
     <div id="step-3" class="step-section">
-        <h2>Step 3: Quote</h2>
+        <h2>Step 3: Set Action Plan</h2>
         <p>We will build this section next...</p>
         <button class="btn btn-secondary" onclick="nextStep(2)">Back</button>
+    </div>
+    
+    <div id="step-4" class="step-section">
+        <h2>Step 4: Finalize Plan</h2>
+        <p>We will build this section next...</p>
+        <button class="btn btn-secondary" onclick="nextStep(3)">Back</button>
     </div>
 
 </div>
@@ -152,7 +161,7 @@
     // --- STATE MANAGEMENT ---
     let currentStep = 1;
 
-    // --- AUTO-SAVE LOGIC ---
+    // --- AUTO-SAVE LOGIC & GOAL TRACKER ---
     document.addEventListener("DOMContentLoaded", function() {
         const savedInputs = document.querySelectorAll(".save-me");
         savedInputs.forEach(input => {
@@ -162,9 +171,27 @@
             }
             input.addEventListener("input", function() {
                 localStorage.setItem(this.id, this.value);
+                if (this.classList.contains('goal-tracker')) {
+                    updateGoalTracker();
+                }
             });
         });
+
+        // Initialize goal tracker on load
+        updateGoalTracker();
     });
+
+    function updateGoalTracker() {
+        const goal = document.getElementById('mainGoal').value;
+        const goalDisplay = document.getElementById('fw-goal-display');
+        
+        if (goal && goal !== 'Select the primary objective...') {
+            goalDisplay.innerText = "Goal: " + goal;
+            goalDisplay.style.display = 'block';
+        } else {
+            goalDisplay.style.display = 'none';
+        }
+    }
 
     function resetForm() {
         if(confirm("Are you sure you want to clear all client data?")) {
@@ -179,19 +206,26 @@
             const name = document.getElementById('clientName').value;
             if(!name) { alert("Please enter at least the Client Name to proceed."); return; }
         }
+        
+        // This is a crucial block for package switching
+        // It ensures that even if you jump back to Step 2, you land on the right package/addon state
+        if (step < currentStep) {
+            // Going back, just remove 'completed' status from the step you are leaving
+            document.querySelector(`#step-ind-${currentStep}`).classList.remove('completed');
+        } else if (step > currentStep) {
+            // Going forward, mark current step as completed
+            document.querySelector(`#step-ind-${currentStep}`).classList.add('completed');
+        }
 
         document.querySelector(`#step-${currentStep}`).classList.remove('active');
         document.querySelector(`#step-ind-${currentStep}`).classList.remove('active');
         
-        if (step > currentStep) {
-             document.querySelector(`#step-ind-${currentStep}`).classList.add('completed');
-        }
-
         currentStep = step;
         document.querySelector(`#step-${currentStep}`).classList.add('active');
         document.querySelector(`#step-ind-${currentStep}`).classList.add('active');
 
-        const percent = (step - 1) * 50;
+        // Progress bar calculation for 4 steps: 0, 33.33, 66.66, 100
+        const percent = (step - 1) * (100 / 3);
         document.getElementById('progress-fill').style.width = percent + '%';
 
         window.scrollTo(0,0);
