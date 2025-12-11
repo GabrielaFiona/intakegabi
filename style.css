@@ -776,3 +776,10 @@ select option {
     max-width: 100%;       /* full width inside the container */
     border-radius: 8px;    /* match card style */
 }
+/* Wrap the pages + functionality cards as two separate "bubbles" */
+.addons-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 10px;
+}
