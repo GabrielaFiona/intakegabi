@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<!-- Add a scoped body class so header layout changes only affect Step 1 -->
 <body class="step1">
 
 <!-- FLOATING INVOICE WIDGET (shared) -->
@@ -21,9 +20,6 @@
         <span>ESTIMATED TOTAL</span>
         <span id="fw-header-total">$0</span>
     </div>
-
-    <!-- Removed fw-goal display from widget on Step 1 -->
-
     <div class="fw-content">
         <div id="fw-items">
             <p style="font-size:0.8rem; color:#666; font-style:italic;">Items added will appear here...</p>
@@ -55,15 +51,6 @@
         </div>
         <div class="step-indicator" id="step-ind-4">
             4 <div class="step-label">Finalize Plan</div>
-        </div>
-    </div>
-
-    <!-- NEW: header goals shown under progress bar -->
-    <div id="header-goals" class="header-goals" style="display:none;">
-        <div class="header-goals-title">Selected Goals</div>
-        <div class="header-goals-chips">
-            <span id="header-goal-website" class="goal-chip" style="display:none;"></span>
-            <span id="header-goal-business" class="goal-chip" style="display:none;"></span>
         </div>
     </div>
 </div>
@@ -133,38 +120,29 @@
             <hr style="border:0; border-top:1px solid var(--border); margin:50px 0 40px;" />
 
             <div style="margin-bottom:30px;">
-                <h2>Business Goals</h2>
-                <p style="font-size:0.9rem; color:var(--text-light); opacity:0.7;">*This helps me recommend the right website structure and systems.*</p>
+                <h2>Website Type</h2>
+                <p style="font-size:0.9rem; color:var(--text-light); opacity:0.7;">*Select the category that best matches what you’re building. Examples will appear after you choose.*</p>
             </div>
 
             <div class="intake-card">
                 <div class="form-grid">
                     <div class="full-width">
-                        <label>Website Goal</label>
-                        <select id="websiteGoal" class="save-me goal-tracker">
+                        <label>Website Type</label>
+                        <select id="websiteType" class="save-me">
                             <option value="" disabled selected>Select one...</option>
-                            <option value="Simple Online Presence">Simple Online Presence</option>
-                            <option value="Website Upgrade">Website Upgrade</option>
-                            <option value="Full Business Website">Full Business Website</option>
+                            <option value="Business & Marketing">Business &amp; Marketing</option>
+                            <option value="E-Commerce & Retail">E-Commerce &amp; Retail</option>
+                            <option value="Content, Media & Education">Content, Media &amp; Education</option>
+                            <option value="Personal & Niche">Personal &amp; Niche</option>
                         </select>
-                    </div>
-                    <div class="full-width">
-                        <label>Website Goal Notes (Optional)</label>
-                        <textarea id="websiteGoalNotes" rows="3" class="save-me" placeholder="Anything you want me to know about this website goal?"></textarea>
+
+                        <!-- Examples show up here AFTER a selection -->
+                        <div id="websiteTypeExamples" class="type-examples" style="display:none;"></div>
                     </div>
 
                     <div class="full-width">
-                        <label>Business Goal</label>
-                        <select id="businessGoal" class="save-me goal-tracker">
-                            <option value="" disabled selected>Select one...</option>
-                            <option value="Lead Generation">Lead Generation</option>
-                            <option value="Brand Awareness">Brand Awareness</option>
-                            <option value="Business Function(s)">Business Function(s)</option>
-                        </select>
-                    </div>
-                    <div class="full-width">
-                        <label>Business Goal Notes (Optional)</label>
-                        <textarea id="businessGoalNotes" rows="3" class="save-me" placeholder="Any details about what success looks like for you?"></textarea>
+                        <label>Website Type Notes (Optional)</label>
+                        <textarea id="websiteTypeNotes" rows="3" class="save-me" placeholder="Any context, links, or specifics you want me to know?"></textarea>
                     </div>
                 </div>
             </div>
@@ -177,6 +155,7 @@
             </div>
 
             <div class="intake-card">
+                <!-- Re-uses Step 2 pill styles -->
                 <div class="addons-list systems-pill-list" id="systemsAddons">
                     <label class="addon-pill system-pill">
                         <input type="checkbox" value="Booking">
@@ -218,61 +197,170 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const inputs = document.querySelectorAll('.save-me');
+
     inputs.forEach(input => {
         const saved = localStorage.getItem(input.id);
         if (saved !== null) input.value = saved;
 
-        input.addEventListener('input', function () {
+        const handler = function () {
             localStorage.setItem(this.id, this.value);
-            if (this.classList.contains('goal-tracker')) updateGoalTracker();
-        });
 
-        input.addEventListener('change', function () {
-            localStorage.setItem(this.id, this.value);
-            if (this.classList.contains('goal-tracker')) updateGoalTracker();
-        });
+            // If website type changes, update the examples box
+            if (this.id === 'websiteType') {
+                updateWebsiteTypeExamples();
+            }
+        };
+
+        input.addEventListener('input', handler);
+        input.addEventListener('change', handler);
     });
 
     initSystemsAddons();
-    updateGoalTracker();
+    updateWebsiteTypeExamples();
 
     // Load shared onboarding state for the widget totals
     if (window.loadState) window.loadState();
     if (window.calculateTotal) window.calculateTotal();
 });
 
-function updateGoalTracker() {
-    const websiteGoalEl = document.getElementById('websiteGoal');
-    const businessGoalEl = document.getElementById('businessGoal');
+const WEBSITE_TYPE_LIBRARY = {
+    "Business & Marketing": {
+        title: "I. Business & Marketing",
+        intro: "These sites are designed to build a brand, generate leads, or act as a digital business card.",
+        items: [
+            {
+                name: "Brochure/Informational Website",
+                desc: "A standard site with 5–10 pages (Home, About, Services, Contact) used by small businesses to establish a presence.",
+                ex: "Local plumbing companies, dental offices, law firms."
+            },
+            {
+                name: "Landing Page",
+                desc: "A single page designed for a specific marketing campaign with one clear Call to Action (CTA).",
+                ex: "Unbounce, a specific product launch page, webinar registration pages."
+            },
+            {
+                name: "Portfolio Website",
+                desc: "Highly visual sites focused on showcasing creative work.",
+                ex: "Behance profiles, personal sites for photographers, designers, or architects."
+            },
+            {
+                name: "Corporate Website",
+                desc: "Massive sites for large corporations containing investor relations, careers, and company news.",
+                ex: "Coca-Cola Company corporate site, IBM, General Electric."
+            }
+        ]
+    },
+    "E-Commerce & Retail": {
+        title: "II. E-Commerce & Retail",
+        intro: "Websites dedicated to selling products or services online.",
+        items: [
+            {
+                name: "Online Store (B2C)",
+                desc: "Direct-to-consumer digital storefronts.",
+                ex: "Nike.com, Warby Parker, local boutique shops."
+            },
+            {
+                name: "Marketplace",
+                desc: "Platforms where multiple third-party vendors sell products.",
+                ex: "Amazon, Etsy, eBay."
+            },
+            {
+                name: "Dropshipping Website",
+                desc: "A store where the owner sells products but a third party handles shipping and inventory.",
+                ex: "Many niche gadget stores found on Instagram/TikTok."
+            },
+            {
+                name: "Subscription Box Site",
+                desc: "Sites focused on recurring monthly deliveries.",
+                ex: "Dollar Shave Club, Blue Apron, BarkBox."
+            }
+        ]
+    },
+    "Content, Media & Education": {
+        title: "III. Content, Media & Education",
+        intro: "Sites driven by information consumption, reading, and learning.",
+        items: [
+            {
+                name: "Blog",
+                desc: "A journal-style site with reverse-chronological posts. Can be personal or professional.",
+                ex: "TechCrunch, specialized cooking blogs, personal travel diaries."
+            },
+            {
+                name: "News & Magazine",
+                desc: "High-volume content sites with multiple authors and categories.",
+                ex: "The New York Times, CNN, Wired, Vogue."
+            },
+            {
+                name: "Wiki / Knowledge Base",
+                desc: "Collaborative or database-style sites focused on documentation and facts.",
+                ex: "Wikipedia, Fandom, Notion help pages."
+            },
+            {
+                name: "Educational / LMS (Learning Management System)",
+                desc: "Platforms hosting courses and student progress tracking.",
+                ex: "Coursera, Udemy, Khan Academy, university portals."
+            },
+            {
+                name: "Streaming & Entertainment",
+                desc: "Sites optimized for delivering video or audio content.",
+                ex: "Netflix, YouTube, Spotify, Twitch."
+            }
+        ]
+    },
+    "Personal & Niche": {
+        title: "IV. Personal & Niche",
+        intro: "Personal sites or purpose-built sites for a specific community or event.",
+        items: [
+            {
+                name: "Personal Website / Bio",
+                desc: "A simple “About Me” site, often used as a digital CV.",
+                ex: "Linktree pages, personal resume sites."
+            },
+            {
+                name: "Event / Wedding Website",
+                desc: "Temporary sites providing information for a specific event (RSVP, registry, maps).",
+                ex: "The Knot wedding pages, conference scheduling sites."
+            },
+            {
+                name: "Non-Profit / NGO",
+                desc: "Sites focused on soliciting donations and explaining a mission.",
+                ex: "World Wildlife Fund, Red Cross, local animal shelters."
+            },
+            {
+                name: "Government",
+                desc: "Informational portals for civic services.",
+                ex: "USA.gov, IRS.gov, local city council sites."
+            }
+        ]
+    }
+};
 
-    const websiteGoal = websiteGoalEl ? websiteGoalEl.value : '';
-    const businessGoal = businessGoalEl ? businessGoalEl.value : '';
+function updateWebsiteTypeExamples() {
+    const select = document.getElementById('websiteType');
+    const box = document.getElementById('websiteTypeExamples');
+    if (!select || !box) return;
 
-    // Header goals (under progress bar)
-    const headerWrap = document.getElementById('header-goals');
-    const chipWebsite = document.getElementById('header-goal-website');
-    const chipBusiness = document.getElementById('header-goal-business');
+    const value = select.value;
+    const data = WEBSITE_TYPE_LIBRARY[value];
 
-    const any = !!(websiteGoal || businessGoal);
-    if (headerWrap) headerWrap.style.display = any ? 'flex' : 'none';
-
-    if (chipWebsite) {
-        if (websiteGoal) {
-            chipWebsite.textContent = 'Website Goal: ' + websiteGoal;
-            chipWebsite.style.display = 'inline-flex';
-        } else {
-            chipWebsite.style.display = 'none';
-        }
+    if (!value || !data) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
     }
 
-    if (chipBusiness) {
-        if (businessGoal) {
-            chipBusiness.textContent = 'Business Goal: ' + businessGoal;
-            chipBusiness.style.display = 'inline-flex';
-        } else {
-            chipBusiness.style.display = 'none';
-        }
-    }
+    let html = '';
+    html += `<h4>${data.title}</h4>`;
+    html += `<p>${data.intro}</p>`;
+    html += `<div class="type-subtitle">Common formats</div>`;
+    html += `<ul>`;
+    data.items.forEach(item => {
+        html += `<li><strong>${item.name}:</strong> ${item.desc} <span class="ex"><br><em>Examples:</em> ${item.ex}</span></li>`;
+    });
+    html += `</ul>`;
+
+    box.innerHTML = html;
+    box.style.display = 'block';
 }
 
 function initSystemsAddons() {
@@ -289,6 +377,7 @@ function initSystemsAddons() {
         });
     };
 
+    // Restore saved selections
     try {
         const saved = localStorage.getItem('systemsAddons');
         if (saved) {
@@ -303,6 +392,7 @@ function initSystemsAddons() {
 
     syncSelectedClasses();
 
+    // Save on change
     const save = () => {
         const selected = checkboxes.filter(cb => cb.checked).map(cb => cb.value);
         localStorage.setItem('systemsAddons', JSON.stringify(selected));
@@ -320,13 +410,18 @@ function resetForm() {
         localStorage.removeItem('clientPhone');
         localStorage.removeItem('clientUrl');
         localStorage.removeItem('clientIndustry');
-        localStorage.removeItem('websiteGoal');
-        localStorage.removeItem('websiteGoalNotes');
-        localStorage.removeItem('businessGoal');
-        localStorage.removeItem('businessGoalNotes');
+
+        // Website Type
+        localStorage.removeItem('websiteType');
+        localStorage.removeItem('websiteTypeNotes');
+
+        // Systems
         localStorage.removeItem('systemsAddons');
         localStorage.removeItem('systemsAddonsNotes');
+
+        // Shared pricing widget state
         localStorage.removeItem('onboardingState');
+
         location.reload();
     }
 }
