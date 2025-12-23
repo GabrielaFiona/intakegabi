@@ -1689,3 +1689,74 @@ select option {
         justify-content: flex-start;
     }
 }
+/* =========================================================
+   STEP 1 ONLY: Header Goals under Progress Bar
+   ========================================================= */
+
+/* Stack progress bar and header goals inside the sticky header (Step 1 only) */
+body.step1 .progress-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Keep the progress bar aligned like before */
+body.step1 .progress-bar {
+    margin: 0;
+}
+
+/* Goals row under progress bar */
+body.step1 .header-goals {
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+/* Left label */
+body.step1 .header-goals-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: var(--text-light);
+    opacity: 0.8;
+    white-space: nowrap;
+}
+
+/* Chips container */
+body.step1 .header-goals-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Chip style (matches your pill vibe) */
+body.step1 .goal-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 127, 181, 0.55);
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    background: rgba(31, 127, 181, 0.12);
+    box-shadow: 0 0 12px rgba(31, 127, 181, 0.18);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    body.step1 .header-goals {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    body.step1 .header-goals-chips {
+        justify-content: flex-start;
+    }
+}
