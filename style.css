@@ -1634,3 +1634,58 @@ select option {
     opacity: 0;
     pointer-events: none;
 }
+/* =========================================================
+   STEP 1: TOP GOAL SUMMARY BAR (Selected Goals)
+   ========================================================= */
+.goal-summary-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 10px 0 30px;
+}
+
+.goal-summary-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: var(--text-light);
+    opacity: 0.8;
+    white-space: nowrap;
+}
+
+.goal-summary-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.goal-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    background: rgba(31, 127, 181, 0.10);
+    border-color: rgba(31, 127, 181, 0.55);
+    box-shadow: 0 0 12px rgba(31, 127, 181, 0.18);
+}
+
+/* Keep the bar from feeling cramped on mobile */
+@media (max-width: 768px) {
+    .goal-summary-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .goal-summary-chips {
+        justify-content: flex-start;
+    }
+}
