@@ -57,14 +57,13 @@
 
         <div class="collapsible-body">
           <div class="collapsible-inner">
+            
             <div class="packages-included-inline">
               <div class="packages-included-title">Included in all packages</div>
-              <div>
-                <span class="chip">Mobile-Optimized</span>
-                <span class="chip">Analytics</span>
-                <span class="chip">Basic SEO</span>
-                <span class="chip">Hosting Setup</span>
-              </div>
+              <p style="font-size: 0.95rem; margin: 0; opacity: 0.9; max-width: 600px; margin: 0 auto;">
+                Every project comes standard with a fully mobile-responsive design, basic SEO setup to help you get found, 
+                Google Analytics integration for tracking, professional copywriting support, and complete hosting configuration.
+              </p>
             </div>
 
             <div class="package-grid">
@@ -114,6 +113,75 @@
         </div>
       </section>
 
+      <section id="brandingSection" class="collapsible collapsed" data-collapsible data-key="step2-branding">
+        <button class="collapsible-header" type="button" data-collapsible-header>
+          <div>
+            <div class="collapsible-title">Branding</div>
+            <div class="collapsible-subtitle">Materials & Design Assets</div>
+          </div>
+          <div class="collapsible-chevron">▾</div>
+        </button>
+
+        <div class="collapsible-body">
+          <div class="collapsible-inner">
+            <div class="notice" id="brandingLockedNotice" style="text-align:center; opacity:0.7;">
+              Please select a website package above to unlock branding.
+            </div>
+            
+            <div id="brandingUnlocked" class="hidden">
+              
+              <div class="branding-toggle-row" style="margin-bottom: 30px;">
+                <span style="font-weight:600; color:var(--text-main);">Do you have branding provided?</span>
+                <div class="segmented-control">
+                  <input class="seg-input" type="radio" name="brandingProvided" id="brandingProvidedYes" value="yes" onchange="toggleBrandingPanels(this.value)">
+                  <label class="seg-label" for="brandingProvidedYes">Yes</label>
+                  <input class="seg-input" type="radio" name="brandingProvided" id="brandingProvidedNo" value="no" onchange="toggleBrandingPanels(this.value)">
+                  <label class="seg-label" for="brandingProvidedNo">No</label>
+                </div>
+              </div>
+
+              <div id="brandingProvidedPanel" class="branding-panel hidden">
+                <div class="form-grid">
+                  <div class="full-width">
+                    <label>Upload Brand Assets</label>
+                    <p style="font-size:0.8rem; margin-bottom:12px; opacity:0.7;">Upload logos, fonts, or style guides here.</p>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                       <input type="file" id="brandingUploads" multiple style="width: auto; flex-grow: 1;" />
+                    </div>
+                    
+                    <div id="file-staging-box" class="file-staging-area hidden">
+                      <div style="font-size:0.75rem; color:var(--accent-blue); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Attached Files</div>
+                      <div id="file-list-content"></div>
+                    </div>
+                  </div>
+
+                  <div class="full-width">
+                    <label>Notes & Asset List</label>
+                    <textarea id="brandingProvidedNotes" class="save-me" rows="4" placeholder="Let's chat here. List the assets you have or any specific design preferences..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div id="brandingNotProvidedPanel" class="branding-panel hidden">
+                 <h4 style="margin-bottom:15px; color:var(--accent-blue);">Add Branding Services</h4>
+                 <div class="package-card" id="brand-kit-bar" onclick="toggleBrandKit(this)" style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                      <div style="font-family:var(--font-heading); font-size:1.4rem;">Full Brand Kit</div>
+                      <div style="font-size:0.9rem; opacity:0.8;">Logo Suite, Typography, Colors</div>
+                    </div>
+                    <div style="text-align:right;">
+                      <span class="og-price" style="text-decoration:line-through; font-size:0.8rem; opacity:0.6;">$500</span>
+                      <div class="final-price" style="font-size:1.4rem; color:var(--accent-blue); font-weight:700;">$500</div>
+                      <span class="discount-label" style="font-size:0.6rem; letter-spacing:1px; display:none; color:var(--accent-blue);">BUNDLED</span>
+                    </div>
+                 </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="pageBuilderSection" class="collapsible hidden collapsed" data-collapsible data-key="step2-pages">
         <button class="collapsible-header" type="button" data-collapsible-header>
           <div>
@@ -138,45 +206,13 @@
                 </div>
 
                 <label>Your Sitemap (<span id="pageCountDisplay">0/0</span>)</label>
-                <div class="active-pages-list" id="activePagesList">
-                  </div>
+                <div class="active-pages-list" id="activePagesList"></div>
                 <div id="pageLimitWarning" class="page-limit-warning"></div>
 
                 <div style="margin-top:20px; display:flex; gap:10px;">
                    <input type="text" id="customPageInput" placeholder="Add custom page name..." />
                    <button class="btn btn-secondary" onclick="addPage()">Add</button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="brandingSection" class="collapsible collapsed" data-collapsible data-key="step2-branding">
-        <button class="collapsible-header" type="button" data-collapsible-header>
-          <div>
-            <div class="collapsible-title">Branding</div>
-            <div class="collapsible-subtitle">Materials & Design Assets</div>
-          </div>
-          <div class="collapsible-chevron">▾</div>
-        </button>
-
-        <div class="collapsible-body">
-          <div class="collapsible-inner">
-            <div class="notice" id="brandingLockedNotice" style="text-align:center; opacity:0.7;">
-              Please select a website package above to unlock branding.
-            </div>
-            <div id="brandingUnlocked" class="hidden">
-              <div class="package-card" id="brand-kit-bar" onclick="toggleBrandKit(this)" style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
-                  <div>
-                    <div style="font-family:var(--font-heading); font-size:1.4rem;">Full Brand Kit</div>
-                    <div style="font-size:0.9rem; opacity:0.8;">Logo Suite, Typography, Colors</div>
-                  </div>
-                  <div style="text-align:right;">
-                    <span class="og-price" style="text-decoration:line-through; font-size:0.8rem; opacity:0.6;">$500</span>
-                    <div class="final-price" style="font-size:1.4rem; color:var(--accent-blue); font-weight:700;">$500</div>
-                    <span class="discount-label" style="font-size:0.6rem; letter-spacing:1px; display:none; color:var(--accent-blue);">BUNDLED</span>
-                  </div>
               </div>
             </div>
           </div>
