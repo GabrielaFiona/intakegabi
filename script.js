@@ -5,12 +5,12 @@ const state = {
   industry: "",
   pages: [],
   addons: [],
-  pagePlans: {} 
+  pagePlans: {},
+  brandingProvided: null
 };
 
 const BASE_BRAND_KIT_PRICE = 500;
 
-// Industries & Suggestions DB
 const SUGGESTION_DB = {
   "restaurant": ["Menu", "Reservations", "Events", "About Us", "Gallery", "Catering"],
   "boutique": ["Shop", "Lookbook", "About Us", "FAQ", "Press", "Returns"],
@@ -30,13 +30,12 @@ function loadState() {
   if (raw) Object.assign(state, JSON.parse(raw));
 }
 
-// --- NAVIGATION ---
 function nextStep(stepNumber) {
   saveState();
   window.location.href = `step${stepNumber}.html`;
 }
 
-// --- STEP 2: PACKAGES & PAGE BUILDER ---
+// --- STEP 2 LOGIC ---
 function selectPackage(id, name, price, limit, brandKitBundlePrice, extraPageCost, element) {
   document.querySelectorAll('.package-card').forEach(el => el.classList.remove('selected'));
   if (element) element.classList.add('selected');
@@ -61,7 +60,8 @@ function handlePackageSelected(isRestore) {
   if (unlocked) unlocked.classList.remove('hidden');
   if (pageBuilder) {
     pageBuilder.classList.remove('hidden');
-    if (!isRestore) {
+    // Only auto-open page builder if branding is already settled or restored
+    if (!isRestore && state.brandingProvided) {
       const pbCol = document.querySelector('[data-key="step2-pages"]');
       if (pbCol) pbCol.classList.remove('collapsed');
     }
@@ -73,8 +73,58 @@ function handlePackageSelected(isRestore) {
   if (window.initCollapsibles) window.initCollapsibles(); 
 }
 
+// BRANDING TOGGLES
+function toggleBrandingPanels(value) {
+  state.brandingProvided = value;
+  const yesPanel = document.getElementById('brandingProvidedPanel');
+  const noPanel = document.getElementById('brandingNotProvidedPanel');
+  
+  if (yesPanel) yesPanel.classList.toggle('hidden', value !== 'yes');
+  if (noPanel) noPanel.classList.toggle('hidden', value !== 'no');
+  
+  saveState();
+}
+
+// FILE UPLOAD HANDLER
+function handleFileUpload(e) {
+  const files = e.target.files;
+  const box = document.getElementById('file-staging-box');
+  const list = document.getElementById('file-list-content');
+  
+  if (!files || !files.length) {
+    box.classList.add('hidden');
+    return;
+  }
+  
+  box.classList.remove('hidden');
+  list.innerHTML = ''; 
+
+  Array.from(files).forEach(file => {
+    const row = document.createElement('div');
+    row.className = 'file-list-item';
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = file.name;
+    row.appendChild(nameSpan);
+    list.appendChild(row);
+  });
+}
+
+// PAGE BUILDER
 function initPageBuilder() {
   const input = document.getElementById('industryInput');
+  const fileInput = document.getElementById('brandingUploads');
+  
+  if (fileInput) fileInput.addEventListener('change', handleFileUpload);
+
+  // Restore Branding Toggles
+  if (state.brandingProvided) {
+    const radio = document.querySelector(`input[name="brandingProvided"][value="${state.brandingProvided}"]`);
+    if (radio) {
+      radio.checked = true;
+      toggleBrandingPanels(state.brandingProvided);
+    }
+  }
+
   if (!input) return;
   renderActivePages();
   input.addEventListener('keyup', (e) => {
@@ -338,13 +388,12 @@ function saveAdvancedNotes(text) {
 }
 
 // --- CANVAS TOOLS & LOGIC ---
-const canvasState = {}; // Store tool state per group
+const canvasState = {}; 
 
 function setTool(groupName, tool, btn) {
   if (!canvasState[groupName]) canvasState[groupName] = { tool: 'pencil' };
   canvasState[groupName].tool = tool;
   
-  // Update UI
   if (btn) {
     const parent = btn.parentElement;
     parent.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
@@ -362,7 +411,6 @@ function initCanvas(canvasId, groupName) {
   let isDrawing = false;
   let startX, startY;
 
-  // Defaults
   ctx.strokeStyle = '#2CA6E0';
   ctx.lineWidth = 3; 
   ctx.lineCap = 'round';
@@ -383,7 +431,7 @@ function initCanvas(canvasId, groupName) {
          ctx.fillStyle = '#fff';
          ctx.font = '16px Montserrat';
          ctx.fillText(text, startX, startY);
-         ctx.fillStyle = 'rgba(44, 166, 224, 0.1)'; // Reset
+         ctx.fillStyle = 'rgba(44, 166, 224, 0.1)'; 
        }
        isDrawing = false;
     }
@@ -402,12 +450,11 @@ function initCanvas(canvasId, groupName) {
       ctx.stroke();
     } else if (tool === 'eraser') {
       ctx.lineWidth = 20;
-      ctx.globalCompositeOperation = 'destination-out'; // Erase alpha
+      ctx.globalCompositeOperation = 'destination-out'; 
       ctx.lineTo(x, y);
       ctx.stroke();
-      ctx.globalCompositeOperation = 'source-over'; // Reset
+      ctx.globalCompositeOperation = 'source-over'; 
     }
-    // Shapes are drawn on mouseup to avoid complex preview logic in this simple script
   });
 
   canvas.addEventListener('mouseup', e => {
@@ -423,7 +470,7 @@ function initCanvas(canvasId, groupName) {
 
     if (tool === 'box' || tool === 'rect') {
       const w = endX - startX;
-      const h = (tool === 'box') ? w : (endY - startY); // Box implies square
+      const h = (tool === 'box') ? w : (endY - startY); 
       ctx.rect(startX, startY, w, h);
       ctx.fill();
       ctx.stroke();
@@ -435,9 +482,9 @@ function initCanvas(canvasId, groupName) {
       ctx.stroke();
     } else if (tool === 'triangle') {
       ctx.beginPath();
-      ctx.moveTo(startX, startY); // Top/Start
-      ctx.lineTo(endX, endY); // Bottom Right
-      ctx.lineTo(startX - (endX - startX), endY); // Bottom Left (Simple Isosceles calc)
+      ctx.moveTo(startX, startY); 
+      ctx.lineTo(endX, endY); 
+      ctx.lineTo(startX - (endX - startX), endY); 
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
@@ -457,12 +504,10 @@ function resetCanvasGroup(id1, id2) {
   }
 }
 
-// --- DOWNLOAD MERGER ---
 function downloadMockups(pageName, mobileId, desktopId) {
   const mCanvas = document.getElementById(mobileId);
   const dCanvas = document.getElementById(desktopId);
   
-  // Create a temporary composite canvas
   const gap = 20;
   const w = mCanvas.width + dCanvas.width + gap;
   const h = Math.max(mCanvas.height, dCanvas.height);
@@ -472,29 +517,23 @@ function downloadMockups(pageName, mobileId, desktopId) {
   comp.height = h;
   const ctx = comp.getContext('2d');
   
-  // Fill Background (so it's not transparent png)
   ctx.fillStyle = '#0f1322';
   ctx.fillRect(0,0,w,h);
   
-  // Draw Mobile
   ctx.drawImage(mCanvas, 0, 0);
-  // Draw Desktop
   ctx.drawImage(dCanvas, mCanvas.width + gap, 0);
   
-  // Labels
   ctx.fillStyle = '#fff';
   ctx.font = '20px Montserrat';
   ctx.fillText("Mobile", 10, 30);
   ctx.fillText("Desktop", mCanvas.width + gap + 10, 30);
   
-  // Download
   const link = document.createElement('a');
   link.download = `${pageName}-layout-sketch.png`;
   link.href = comp.toDataURL();
   link.click();
 }
 
-// --- SHARED UTILS (Collapsible, Widget, etc kept same) ---
 function toggleBrandKit(element) {
   state.brandKit = !state.brandKit;
   if (element) element.classList.toggle('selected', state.brandKit);
