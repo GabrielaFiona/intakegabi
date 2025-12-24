@@ -57,7 +57,6 @@
 
         <div class="collapsible-body">
           <div class="collapsible-inner">
-            
             <div class="packages-included-inline">
               <div class="packages-included-title">Included in all packages</div>
               <p style="font-size: 0.95rem; margin: 0; opacity: 0.9; max-width: 600px; margin: 0 auto;">
@@ -150,7 +149,10 @@
                     </div>
                     
                     <div id="file-staging-box" class="file-staging-area hidden">
-                      <div style="font-size:0.75rem; color:var(--accent-blue); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Attached Files</div>
+                      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-size:0.75rem; color:var(--accent-blue); text-transform:uppercase; letter-spacing:1px;">Attached Files</span>
+                        <button class="btn-download-mini" onclick="downloadAllFiles()">Download All</button>
+                      </div>
                       <div id="file-list-content"></div>
                     </div>
                   </div>
@@ -160,21 +162,72 @@
                     <textarea id="brandingProvidedNotes" class="save-me" rows="4" placeholder="Let's chat here. List the assets you have or any specific design preferences..."></textarea>
                   </div>
                 </div>
-              </div>
 
-              <div id="brandingNotProvidedPanel" class="branding-panel hidden">
-                 <h4 style="margin-bottom:15px; color:var(--accent-blue);">Add Branding Services</h4>
-                 <div class="package-card" id="brand-kit-bar" onclick="toggleBrandKit(this)" style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
+                <div class="divider" style="margin: 40px 0; border-top: 1px dashed var(--border-light);"></div>
+
+                <h4 style="margin-bottom:15px; font-size:1rem; opacity:0.8;">Need a Refresh?</h4>
+                <div class="package-card brand-kit-ref" onclick="toggleBrandKit(this)" style="padding:20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                     <div>
                       <div style="font-family:var(--font-heading); font-size:1.4rem;">Full Brand Kit</div>
                       <div style="font-size:0.9rem; opacity:0.8;">Logo Suite, Typography, Colors</div>
                     </div>
                     <div style="text-align:right;">
-                      <span class="og-price" style="text-decoration:line-through; font-size:0.8rem; opacity:0.6;">$500</span>
-                      <div class="final-price" style="font-size:1.4rem; color:var(--accent-blue); font-weight:700;">$500</div>
-                      <span class="discount-label" style="font-size:0.6rem; letter-spacing:1px; display:none; color:var(--accent-blue);">BUNDLED</span>
+                      <span class="bk-og-price" style="text-decoration:line-through; font-size:0.8rem; opacity:0.6;">$500</span>
+                      <div class="bk-final-price" style="font-size:1.4rem; color:var(--accent-blue); font-weight:700;">$500</div>
+                      <span class="bk-discount-label" style="font-size:0.6rem; letter-spacing:1px; display:none; color:var(--accent-blue);">BUNDLED</span>
+                    </div>
+                </div>
+
+                <div class="custom-branding-wrapper">
+                  <button class="addon-pill" onclick="toggleCustomBrandingUI('customBrandingPanelYes')">
+                    <span>+ Add Custom Branding</span>
+                  </button>
+                  <div id="customBrandingPanelYes" class="custom-panel hidden" style="margin-top:15px; padding:20px; border:1px dashed var(--border-light); border-radius:10px; background:var(--surface-base);">
+                    <div class="form-grid">
+                      <div>
+                        <label>Service Name</label>
+                        <input type="text" class="custom-brand-name" placeholder="e.g. Logo Refresh" oninput="updateCustomBrandingState()" />
+                      </div>
+                      <div>
+                        <label>Price ($)</label>
+                        <input type="number" class="custom-brand-price" placeholder="0" oninput="updateCustomBrandingState()" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="brandingNotProvidedPanel" class="branding-panel hidden">
+                 <h4 style="margin-bottom:15px; color:var(--accent-blue);">Add Branding Services</h4>
+                 <div class="package-card brand-kit-ref" onclick="toggleBrandKit(this)" style="padding:20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <div>
+                      <div style="font-family:var(--font-heading); font-size:1.4rem;">Full Brand Kit</div>
+                      <div style="font-size:0.9rem; opacity:0.8;">Logo Suite, Typography, Colors</div>
+                    </div>
+                    <div style="text-align:right;">
+                      <span class="bk-og-price" style="text-decoration:line-through; font-size:0.8rem; opacity:0.6;">$500</span>
+                      <div class="bk-final-price" style="font-size:1.4rem; color:var(--accent-blue); font-weight:700;">$500</div>
+                      <span class="bk-discount-label" style="font-size:0.6rem; letter-spacing:1px; display:none; color:var(--accent-blue);">BUNDLED</span>
                     </div>
                  </div>
+
+                 <div class="custom-branding-wrapper">
+                    <button class="addon-pill" onclick="toggleCustomBrandingUI('customBrandingPanelNo')">
+                      <span>+ Add Custom Branding</span>
+                    </button>
+                    <div id="customBrandingPanelNo" class="custom-panel hidden" style="margin-top:15px; padding:20px; border:1px dashed var(--border-light); border-radius:10px; background:var(--surface-base);">
+                      <div class="form-grid">
+                        <div>
+                          <label>Service Name</label>
+                          <input type="text" class="custom-brand-name" placeholder="e.g. Strategy Session" oninput="updateCustomBrandingState()" />
+                        </div>
+                        <div>
+                          <label>Price ($)</label>
+                          <input type="number" class="custom-brand-price" placeholder="0" oninput="updateCustomBrandingState()" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
               </div>
 
             </div>
