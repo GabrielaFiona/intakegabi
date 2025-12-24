@@ -397,3 +397,25 @@ select option { background: #0f1322; color: var(--text-main); }
   h1 { font-size: 2.5rem; }
   .container { margin: 30px auto; }
 }
+/* Add to style.css */
+
+.mini-file-list {
+  margin-top: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  padding: 5px;
+  min-height: 10px;
+}
+
+.page-file-item {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.page-file-item:last-child {
+  border-bottom: none;
+}
