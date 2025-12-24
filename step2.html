@@ -4,20 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Client Onboarding - Build Structure</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="step2">
 
-  <!-- FLOATING INVOICE WIDGET (shared) -->
   <div id="floating-widget" class="collapsed">
     <div class="fw-header" onclick="toggleWidget()">
-      <span>ESTIMATED TOTAL</span>
+      <span>Estimated Investment</span>
       <span id="fw-header-total">$0</span>
     </div>
     <div class="fw-content">
@@ -25,7 +22,7 @@
         <p class="empty-state">Select a package to start...</p>
       </div>
       <div class="fw-total">
-        <span>Total Investment</span>
+        <span>Total</span>
         <span id="fw-full-total">$0</span>
       </div>
       <div class="fw-deposit">
@@ -34,199 +31,150 @@
     </div>
   </div>
 
-  <!-- PROGRESS BAR -->
   <div class="progress-header">
     <div class="progress-bar">
       <div class="progress-line-bg"></div>
       <div class="progress-line-fill" id="progress-fill" style="width:33.33%;"></div>
-
-      <div class="step-indicator completed" id="step-ind-1">
-        1 <div class="step-label">Business Goals</div>
-      </div>
-      <div class="step-indicator active" id="step-ind-2">
-        2 <div class="step-label">Build Structure</div>
-      </div>
-      <div class="step-indicator" id="step-ind-3">
-        3 <div class="step-label">Action Plan</div>
-      </div>
-      <div class="step-indicator" id="step-ind-4">
-        4 <div class="step-label">Finalize Plan</div>
-      </div>
+      <div class="step-indicator completed" id="step-ind-1">1 <div class="step-label">Goals</div></div>
+      <div class="step-indicator active" id="step-ind-2">2 <div class="step-label">Structure</div></div>
+      <div class="step-indicator" id="step-ind-3">3 <div class="step-label">Plan</div></div>
+      <div class="step-indicator" id="step-ind-4">4 <div class="step-label">Finalize</div></div>
     </div>
   </div>
 
   <div class="container">
     <div id="step-2" class="step-section active">
 
-      <div class="intro-block">
+      <div style="text-align: center; margin-bottom: 50px;">
         <h1>Build Structure</h1>
-        <p>Choose a website package first — that sets the foundation for everything else. Then we’ll layer in branding.</p>
+        <p>Choose a website package to set the foundation.</p>
       </div>
 
-      <!-- PACKAGES -->
       <section class="collapsible" data-collapsible data-key="step2-packages">
         <button class="collapsible-header" type="button" data-collapsible-header>
-          <div class="collapsible-header-left">
+          <div>
             <div class="collapsible-title">Website Packages</div>
-            <div class="collapsible-subtitle">Pick one package to set the baseline scope and investment.</div>
+            <div class="collapsible-subtitle">Select your baseline scope.</div>
           </div>
-          <span class="collapsible-chevron" aria-hidden="true">▾</span>
+          <div class="collapsible-chevron">▾</div>
         </button>
 
         <div class="collapsible-body">
           <div class="collapsible-inner">
 
-            <!-- Included strip (floats centered like part of packages) -->
             <div class="packages-included-inline">
-              <div class="packages-included-title">Included in all website packages</div>
-              <div class="packages-included-chips">
-                <span class="chip">1 revision</span>
-                <span class="chip">Mobile-optimized development</span>
-                <span class="chip">Google Analytics</span>
+              <div class="packages-included-title">Included in all packages</div>
+              <div>
+                <span class="chip">Mobile-Optimized</span>
+                <span class="chip">Analytics</span>
                 <span class="chip">Basic SEO</span>
-                <span class="chip">Basic copywriting</span>
-                <span class="chip">Free Netlify subdomain/URL</span>
+                <span class="chip">Copywriting</span>
+                <span class="chip">Hosting Setup</span>
               </div>
             </div>
 
             <div class="package-grid">
-
-              <!-- BASIC -->
               <div class="package-card" data-package-id="basic"
                    onclick="selectPackage('basic','Basic Website',1500,2,425,150,this); handlePackageSelected();">
                 <div class="package-summary">
                   <div class="package-media">
-                    <!-- Replace this placeholder with an <img src="..."> if you want -->
-                    <div class="package-media-placeholder">Add Package Graphic</div>
+                    <div class="package-media-placeholder">Basic</div>
                   </div>
-
-                  <div class="package-summary-content">
-                    <div class="package-top">
-                      <div class="package-name">Basic Website</div>
-                      <div class="package-price">$1,500</div>
-                    </div>
-                    <div class="package-meta">2 pages · 1 contact form</div>
-                    <div class="package-duration">Duration: 1–2 weeks</div>
+                  <div>
+                    <div class="package-name">Basic</div>
+                    <div class="package-price">$1,500</div>
+                    <div style="font-size:0.85rem; opacity:0.7; margin-top:5px;">2 pages · 1 form</div>
                   </div>
-
-                  <button class="package-expand" type="button" aria-expanded="false"
-                          onclick="event.stopPropagation(); togglePackageDetails(this);">
-                    Details <span class="package-expand-icon">▾</span>
+                  <button class="package-expand" type="button" onclick="event.stopPropagation(); togglePackageDetails(this);">
+                    View Details
                   </button>
                 </div>
-
                 <div class="package-details-wrap">
                   <div class="package-details">
-                    <p class="package-desc">
-                      Great for online business cards, a photo gallery, personal announcements, and coming-soon pages.
-                    </p>
+                    <p style="font-size:0.9rem;">Perfect for online business cards or coming-soon pages.</p>
                     <ul class="package-list">
-                      <li>2 pages</li>
-                      <li>1 contact form</li>
+                      <li>2 Custom Pages</li>
+                      <li>1 Contact Form</li>
+                      <li>Standard Layout</li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <!-- STANDARD -->
               <div class="package-card" data-package-id="standard"
-                   onclick="selectPackage('standard','Standard Business Website',2500,5,400,175,this); handlePackageSelected();">
+                   onclick="selectPackage('standard','Standard Website',2500,5,400,175,this); handlePackageSelected();">
                 <div class="package-summary">
                   <div class="package-media">
-                    <div class="package-media-placeholder">Add Package Graphic</div>
+                    <div class="package-media-placeholder">Standard</div>
                   </div>
-
-                  <div class="package-summary-content">
-                    <div class="package-top">
-                      <div class="package-name">Standard Business Website</div>
-                      <div class="package-price">$2,500</div>
-                    </div>
-                    <div class="package-meta">5 pages · contact form · 3 embeds</div>
-                    <div class="package-duration">Duration: 3–4 weeks</div>
+                  <div>
+                    <div class="package-name">Standard</div>
+                    <div class="package-price">$2,500</div>
+                    <div style="font-size:0.85rem; opacity:0.7; margin-top:5px;">5 pages · 3 embeds</div>
                   </div>
-
-                  <button class="package-expand" type="button" aria-expanded="false"
-                          onclick="event.stopPropagation(); togglePackageDetails(this);">
-                    Details <span class="package-expand-icon">▾</span>
+                  <button class="package-expand" type="button" onclick="event.stopPropagation(); togglePackageDetails(this);">
+                    View Details
                   </button>
                 </div>
-
                 <div class="package-details-wrap">
                   <div class="package-details">
-                    <p class="package-desc">
-                      Good for local businesses who need credibility + searchability (restaurants, contractors, boutiques).
-                    </p>
+                    <p style="font-size:0.9rem;">Ideal for local businesses needing credibility (restaurants, contractors).</p>
                     <ul class="package-list">
-                      <li>5 pages</li>
-                      <li>Contact form</li>
-                      <li>3 embeds: Google Reviews, Google Maps, Instagram Feed</li>
-                      <li>Interactive design features with custom branding</li>
+                      <li>5 Custom Pages</li>
+                      <li>Contact Form</li>
+                      <li>Google Maps & Reviews</li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <!-- ADVANCED -->
               <div class="package-card" data-package-id="advanced"
-                   onclick="selectPackage('advanced','Advanced Business Website',4500,10,375,200,this); handlePackageSelected();">
+                   onclick="selectPackage('advanced','Advanced Website',4500,10,375,200,this); handlePackageSelected();">
                 <div class="package-summary">
                   <div class="package-media">
-                    <div class="package-media-placeholder">Add Package Graphic</div>
+                    <div class="package-media-placeholder">Advanced</div>
                   </div>
-
-                  <div class="package-summary-content">
-                    <div class="package-top">
-                      <div class="package-name">Advanced Business Website</div>
-                      <div class="package-price">$4,500</div>
-                    </div>
-                    <div class="package-meta">10 pages · integrations · 5 embeds</div>
-                    <div class="package-duration">Duration: 5–6 weeks</div>
+                  <div>
+                    <div class="package-name">Advanced</div>
+                    <div class="package-price">$4,500</div>
+                    <div style="font-size:0.85rem; opacity:0.7; margin-top:5px;">10 pages · integrations</div>
                   </div>
-
-                  <button class="package-expand" type="button" aria-expanded="false"
-                          onclick="event.stopPropagation(); togglePackageDetails(this);">
-                    Details <span class="package-expand-icon">▾</span>
+                  <button class="package-expand" type="button" onclick="event.stopPropagation(); togglePackageDetails(this);">
+                    View Details
                   </button>
                 </div>
-
                 <div class="package-details-wrap">
                   <div class="package-details">
-                    <p class="package-desc">
-                      Perfect for complex business needs like hotels, rentals, and e-commerce businesses.
-                    </p>
+                    <p style="font-size:0.9rem;">For complex needs like bookings, rentals, or e-commerce.</p>
                     <ul class="package-list">
-                      <li>10 pages</li>
-                      <li>System integrations (bookings, scheduling, e-commerce, etc.)</li>
-                      <li>Optional blog</li>
-                      <li>5 embeds: booking/scheduling system, chatbot, Google Reviews, Google Maps, Instagram Feed</li>
-                      <li>Interactive design features, forms, and custom branding</li>
+                      <li>10 Custom Pages</li>
+                      <li>Booking/Scheduling Integrations</li>
+                      <li>Advanced Interactive Features</li>
                     </ul>
                   </div>
                 </div>
               </div>
-
             </div>
 
-            <!-- After-care options -->
-            <details class="mini-details aftercare-details">
-              <summary>After-Care Options (Post-Launch)</summary>
+            <details style="margin-top: 30px; border-top: 1px solid var(--border-light); padding-top: 20px;">
+              <summary style="cursor: pointer; color: var(--text-muted); font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;">
+                View After-Care Options
+              </summary>
               <div class="aftercare-grid">
                 <div class="aftercare-card">
-                  <div class="aftercare-title">Edits (Hourly)</div>
-                  <div class="aftercare-price">$95/hr <span class="aftercare-muted">(1-hour minimum)</span></div>
-                  <div class="aftercare-desc">Best for occasional updates, quick fixes, or one-off requests.</div>
+                  <div class="aftercare-title">Hourly Edits</div>
+                  <div class="aftercare-price">$95<span style="font-size:0.8rem; font-weight:400;">/hr</span></div>
+                  <p style="font-size:0.85rem; margin:0;">Quick fixes & updates.</p>
                 </div>
-
                 <div class="aftercare-card">
-                  <div class="aftercare-title">Standard Edit Request</div>
-                  <div class="aftercare-price">$175 <span class="aftercare-muted">(per request)</span></div>
-                  <div class="aftercare-desc">Great for “change this section / swap these images / update content” type edits.</div>
+                  <div class="aftercare-title">Standard Request</div>
+                  <div class="aftercare-price">$175</div>
+                  <p style="font-size:0.85rem; margin:0;">Section swaps or content updates.</p>
                 </div>
-
                 <div class="aftercare-card">
-                  <div class="aftercare-title">Website Care Retainer</div>
-                  <div class="aftercare-price">$399/mo</div>
-                  <div class="aftercare-desc">Ongoing support + proactive checks + edits as needed (best for active businesses).</div>
+                  <div class="aftercare-title">Care Retainer</div>
+                  <div class="aftercare-price">$399<span style="font-size:0.8rem; font-weight:400;">/mo</span></div>
+                  <p style="font-size:0.85rem; margin:0;">Ongoing support & health checks.</p>
                 </div>
               </div>
             </details>
@@ -235,124 +183,94 @@
         </div>
       </section>
 
-      <!-- BRANDING -->
       <section id="brandingSection" class="collapsible collapsed" data-collapsible data-key="step2-branding">
         <button class="collapsible-header" type="button" data-collapsible-header>
-          <div class="collapsible-header-left">
+          <div>
             <div class="collapsible-title">Branding</div>
-            <div class="collapsible-subtitle">Tell me what you already have — or add branding services.</div>
+            <div class="collapsible-subtitle">Materials & Design Assets</div>
           </div>
-          <span class="collapsible-chevron" aria-hidden="true">▾</span>
+          <div class="collapsible-chevron">▾</div>
         </button>
 
         <div class="collapsible-body">
           <div class="collapsible-inner">
-
-            <div class="notice" id="brandingLockedNotice">
-              Select a website package above to unlock bundle pricing + branding options.
+            
+            <div class="notice" id="brandingLockedNotice" style="text-align:center; opacity:0.7;">
+              Please select a website package above to unlock branding.
             </div>
 
             <div id="brandingUnlocked" class="hidden">
               <div class="branding-toggle-row">
-                <div class="branding-question">Do you have branding materials already provided?</div>
-
-                <div class="segmented-control" role="radiogroup" aria-label="Branding provided">
+                <span style="font-weight:600; color:var(--text-main);">Do you have branding provided?</span>
+                <div class="segmented-control">
                   <input class="seg-input" type="radio" name="brandingProvided" id="brandingProvidedYes" value="yes">
                   <label class="seg-label" for="brandingProvidedYes">Yes</label>
-
                   <input class="seg-input" type="radio" name="brandingProvided" id="brandingProvidedNo" value="no">
                   <label class="seg-label" for="brandingProvidedNo">No</label>
                 </div>
               </div>
 
-              <!-- YES -->
-              <div id="brandingProvidedPanel" class="branding-panel hidden">
+              <div id="brandingProvidedPanel" class="branding-panel hidden" style="margin-top:20px;">
                 <div class="form-grid">
                   <div class="full-width">
-                    <label>Upload Branding Materials (Optional)</label>
+                    <label>Upload Materials</label>
                     <input type="file" id="brandingUploads" multiple />
-                    <div class="helper-text">Uploads are local-only and won’t persist after refresh.</div>
                   </div>
-
                   <div class="full-width">
-                    <label>What do you already have?</label>
-                    <div class="mini-help">Examples: logos, colors, links, fonts, brand tone, brand guide PDF, photos, social links, etc.</div>
-                    <textarea id="brandingProvidedNotes" class="save-me" rows="3" placeholder="List what you already have and any links or notes."></textarea>
+                    <label>Notes</label>
+                    <textarea id="brandingProvidedNotes" class="save-me" rows="3" placeholder="List what you have (logos, fonts, colors, etc)..."></textarea>
                   </div>
                 </div>
               </div>
 
-              <!-- NO -->
-              <div id="brandingNotProvidedPanel" class="branding-panel hidden">
-                <div class="helper-text" style="margin:0;">
-                  No worries — you can add branding services below (bundle pricing applies once a package is selected).
-                </div>
-              </div>
+              <div id="brandingNotProvidedPanel" class="branding-panel hidden" style="margin-top:20px;">
+                <h4 style="margin-bottom:15px; color:var(--accent-blue);">Add Branding Services</h4>
 
-              <!-- Branding options -->
-              <div class="branding-options">
-                <div class="branding-options-title">Branding Services</div>
-
-                <div class="brand-kit-card" id="brand-kit-bar" onclick="toggleBrandKit(this)">
-                  <div class="kit-details">
-                    <div class="kit-title">Brand Kit</div>
-                    <div class="kit-features">
-                      Logo Suite, Brand Colors &amp; Typography, Brand Persona &amp; Target Customer.
-                    </div>
-                    <div class="kit-note">
-                      Bundle pricing will display automatically based on the website package you selected.
-                    </div>
+                <div class="package-card" id="brand-kit-bar" onclick="toggleBrandKit(this)" style="padding:20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                  <div>
+                    <div style="font-family:var(--font-heading); font-size:1.4rem;">Full Brand Kit</div>
+                    <div style="font-size:0.9rem; opacity:0.8;">Logo Suite, Typography, Colors & Persona</div>
                   </div>
-
-                  <div class="kit-price-block">
-                    <span class="og-price">$500</span>
-                    <span class="discount-label">BUNDLE RATE</span>
-                    <div class="final-price">$500</div>
+                  <div style="text-align:right;">
+                    <span class="og-price" style="text-decoration:line-through; font-size:0.8rem; opacity:0.6;">$500</span>
+                    <div class="final-price" style="font-size:1.4rem; color:var(--accent-blue); font-weight:700;">$500</div>
+                    <span class="discount-label" style="font-size:0.6rem; letter-spacing:1px; display:none;">BUNDLED</span>
                   </div>
                 </div>
 
-                <div class="addons-list" style="margin-top:14px;">
-                  <div class="addon-pill brand-addon"
-                       data-addon-id="single_logo"
-                       onclick="toggleAddon('single_logo','Single Logo',300,this)">
-                    <span class="addon-name">Single Logo</span>
-                    <span class="addon-price">+ $300</span>
+                <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                  <div class="addon-pill" data-addon-id="single_logo" onclick="toggleAddon('single_logo','Single Logo',300,this)">
+                    <span>Single Logo</span>
+                    <span style="opacity:0.6; font-size:0.8rem;">+$300</span>
                   </div>
-
-                  <div class="addon-pill brand-addon"
-                       id="customBrandingPill"
-                       onclick="toggleCustomBranding(this)">
-                    <span class="addon-name">Custom Branding Service</span>
-                    <span class="addon-price">+ Custom</span>
+                  <div class="addon-pill" id="customBrandingPill" onclick="toggleCustomBranding(this)">
+                    <span>Custom Service</span>
+                    <span style="opacity:0.6; font-size:0.8rem;">+Custom</span>
                   </div>
                 </div>
 
-                <div id="customBrandingPanel" class="custom-panel hidden">
+                <div id="customBrandingPanel" class="custom-panel hidden" style="margin-top:20px; padding:20px; border:1px dashed var(--border-light); border-radius:10px;">
                   <div class="form-grid">
                     <div>
-                      <label>Custom Service Name</label>
-                      <input type="text" id="customBrandingName" class="save-me" placeholder="e.g. Brand Strategy Session" />
+                      <label>Service Name</label>
+                      <input type="text" id="customBrandingName" class="save-me" placeholder="e.g. Strategy Session" />
                     </div>
                     <div>
-                      <label>Custom Service Price ($)</label>
-                      <input type="number" id="customBrandingPrice" class="save-me" placeholder="0" min="0" step="1" />
-                    </div>
-                    <div class="full-width">
-                      <div class="helper-text">This will appear in the quote widget once a price is entered.</div>
+                      <label>Price ($)</label>
+                      <input type="number" id="customBrandingPrice" class="save-me" placeholder="0" />
                     </div>
                   </div>
                 </div>
-
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
       </section>
 
-      <div class="step-nav-buttons" style="margin-top:40px; display:flex; justify-content:space-between;">
-        <button class="btn btn-secondary" type="button" onclick="nextStep(1)">&larr; Back: Business Goals</button>
-        <button class="btn btn-primary" type="button" onclick="nextStep(3)">Next: Action Plan &rarr;</button>
+      <div class="step-nav-buttons">
+        <button class="btn btn-secondary" onclick="nextStep(1)">&larr; Back</button>
+        <button class="btn btn-primary" onclick="nextStep(3)">Next: Action Plan &rarr;</button>
       </div>
 
     </div>
@@ -360,26 +278,23 @@
 
   <script src="script.js"></script>
   <script>
+    /* PRESERVED LOGIC */
     document.addEventListener('DOMContentLoaded', function () {
       if (window.loadState) window.loadState();
 
-      // Restore package selection
       if (window.state && window.state.package && window.state.package.id) {
         const selected = document.querySelector('.package-card[data-package-id="' + window.state.package.id + '"]');
         if (selected) selected.classList.add('selected');
         handlePackageSelected(true);
       }
 
-      // Restore brand kit display + total
       if (window.updateBrandKitDisplay) window.updateBrandKitDisplay();
 
-      // Restore selected addons
       if (window.state && Array.isArray(window.state.addons)) {
         window.state.addons.forEach(function (addon) {
           const pill = document.querySelector('.addon-pill[data-addon-id="' + addon.id + '"]');
           if (pill) pill.classList.add('selected');
         });
-
         const custom = window.state.addons.find(a => a.id === 'custom_branding');
         if (custom) {
           const pill = document.getElementById('customBrandingPill');
@@ -392,10 +307,8 @@
           if (priceEl && custom.price != null) priceEl.value = custom.price;
         }
       }
-
       restoreBrandingProvided();
       initLocalAutosave(['brandingProvidedNotes','customBrandingName','customBrandingPrice']);
-
       if (window.calculateTotal) window.calculateTotal();
     });
 
@@ -404,35 +317,27 @@
       const unlocked = document.getElementById('brandingUnlocked');
       if (notice) notice.classList.add('hidden');
       if (unlocked) unlocked.classList.remove('hidden');
-
       const branding = document.getElementById('brandingSection');
       if (branding) {
         branding.classList.remove('collapsed');
-        const header = branding.querySelector('[data-collapsible-header]');
-        if (header) header.setAttribute('aria-expanded', 'true');
-        try { localStorage.setItem('collapsible:step2-branding', 'open'); } catch (e) {}
+        if (!isRestore && window.initCollapsibles) window.initCollapsibles(); 
       }
-
       if (window.updateBrandKitDisplay) window.updateBrandKitDisplay();
-      if (window.initCollapsibles && !isRestore) window.initCollapsibles();
     }
 
     function restoreBrandingProvided() {
       const saved = localStorage.getItem('brandingProvided');
       if (!saved) return;
-
       const yes = document.getElementById('brandingProvidedYes');
       const no = document.getElementById('brandingProvidedNo');
       if (saved === 'yes' && yes) yes.checked = true;
       if (saved === 'no' && no) no.checked = true;
-
       updateBrandingPanels(saved);
     }
 
     function updateBrandingPanels(value) {
       const yesPanel = document.getElementById('brandingProvidedPanel');
       const noPanel = document.getElementById('brandingNotProvidedPanel');
-
       if (yesPanel) yesPanel.classList.toggle('hidden', value !== 'yes');
       if (noPanel) noPanel.classList.toggle('hidden', value !== 'no');
     }
@@ -448,7 +353,6 @@
       const panel = document.getElementById('customBrandingPanel');
       const isSelected = pill.classList.toggle('selected');
       if (panel) panel.classList.toggle('hidden', !isSelected);
-
       if (!isSelected) {
         if (window.removeAddonById) window.removeAddonById('custom_branding');
         return;
@@ -459,19 +363,15 @@
     function updateCustomBrandingAddon() {
       const pill = document.getElementById('customBrandingPill');
       if (!pill || !pill.classList.contains('selected')) return;
-
       const nameEl = document.getElementById('customBrandingName');
       const priceEl = document.getElementById('customBrandingPrice');
-
       const nameRaw = nameEl ? nameEl.value.trim() : '';
       const name = nameRaw ? `Custom: ${nameRaw}` : 'Custom Branding Service';
       const price = priceEl ? Number(priceEl.value) : 0;
-
       if (!price || price <= 0) {
         if (window.removeAddonById) window.removeAddonById('custom_branding');
         return;
       }
-
       if (window.upsertAddon) window.upsertAddon('custom_branding', name, price);
     }
 
@@ -485,16 +385,13 @@
       ids.forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
-
         const saved = localStorage.getItem(id);
         if (saved !== null) el.value = saved;
-
         const handler = () => localStorage.setItem(id, el.value);
         el.addEventListener('input', handler);
         el.addEventListener('change', handler);
       });
     }
   </script>
-
 </body>
 </html>
