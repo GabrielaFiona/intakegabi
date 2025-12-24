@@ -1,106 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Step 2: Structure & Packages</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Onboarding - Build Structure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body class="step2">
 
   <div id="floating-widget" class="collapsed">
-    <div class="fw-header"><span>Estimated Total</span> ▾</div>
+    <div class="fw-header" onclick="toggleWidget()">
+      <span>Estimated Investment</span>
+      <span id="fw-header-total">$0</span>
+    </div>
     <div class="fw-content">
-      <div id="fw-items"></div>
-      <div class="fw-total"><span>Total</span><span id="fw-full-total">$0</span></div>
-      <div style="font-size:0.8rem; text-align:right; margin-top:5px; color:var(--accent-blue);">50% Deposit: <span id="fw-deposit">$0</span></div>
+      <div id="fw-items"><p class="empty-state">Select a package to start...</p></div>
+      <div class="fw-total">
+        <span>Total</span>
+        <span id="fw-full-total">$0</span>
+      </div>
+      <div class="fw-deposit">50% Deposit: <span id="fw-deposit">$0</span></div>
     </div>
   </div>
 
   <div class="progress-header">
     <div class="progress-bar">
       <div class="progress-line-bg"></div>
-      <div class="progress-line-fill" style="width:50%;"></div>
-      <div class="step-indicator completed">1</div>
-      <div class="step-indicator active">2<div class="step-label">Structure</div></div>
-      <div class="step-indicator">3<div class="step-label">Planning</div></div>
+      <div class="progress-line-fill" style="width:33.33%;"></div>
+      <div class="step-indicator completed">1 <div class="step-label">Goals</div></div>
+      <div class="step-indicator active">2 <div class="step-label">Structure</div></div>
+      <div class="step-indicator">3 <div class="step-label">Plan</div></div>
+      <div class="step-indicator">4 <div class="step-label">Finalize</div></div>
     </div>
   </div>
 
   <div class="container">
-    <h1>Choose your foundation.</h1>
-    <p>Select a package, then customize your sitemap. Extra pages are added automatically.</p>
+    <div id="step-2" class="step-section active">
 
-    <div class="collapsible">
-      <button class="collapsible-header">
-        <div class="collapsible-title">1. Select Package</div>
-        <span class="collapsible-chevron">▾</span>
-      </button>
-      <div class="collapsible-body">
-        <div class="collapsible-inner">
-          <div class="package-grid">
-            <div class="package-card" data-package-id="basic">
-              <div class="package-summary">
-                <div class="package-media">BASIC</div>
-                <div class="package-name">Basic Website</div>
-                <div class="package-price">$1,500</div>
-                <div style="font-size:0.85rem; opacity:0.7;">2 Pages Included<br>Online Business Card</div>
+      <div style="text-align: center; margin-bottom: 50px;">
+        <h1>Build Structure</h1>
+        <p>Choose a website package to set the foundation.</p>
+      </div>
+
+      <section class="collapsible" data-collapsible data-key="step2-packages">
+        <button class="collapsible-header" type="button" data-collapsible-header>
+          <div>
+            <div class="collapsible-title">Website Packages</div>
+            <div class="collapsible-subtitle">Select your baseline scope.</div>
+          </div>
+          <div class="collapsible-chevron">▾</div>
+        </button>
+
+        <div class="collapsible-body">
+          <div class="collapsible-inner">
+            <div class="packages-included-inline">
+              <div class="packages-included-title">Included in all packages</div>
+              <div>
+                <span class="chip">Mobile-Optimized</span>
+                <span class="chip">Analytics</span>
+                <span class="chip">Basic SEO</span>
+                <span class="chip">Hosting Setup</span>
               </div>
             </div>
-            <div class="package-card" data-package-id="standard">
-              <div class="package-summary">
-                <div class="package-media">STD</div>
-                <div class="package-name">Standard Biz</div>
-                <div class="package-price">$2,500</div>
-                <div style="font-size:0.85rem; opacity:0.7;">5 Pages Included<br>Growth & Credibility</div>
+
+            <div class="package-grid">
+              <div class="package-card" data-package-id="basic"
+                   onclick="selectPackage('basic','Basic Website',1500,2,425,150,this)">
+                <div class="package-summary">
+                  <div class="package-media"><div class="package-media-placeholder">Basic</div></div>
+                  <div>
+                    <div class="package-name">Basic</div>
+                    <div class="package-price">$1,500</div>
+                    <div style="font-size:0.85rem; opacity:0.7; margin-top:5px;">2 pages · Online Card</div>
+                  </div>
+                  <button class="package-expand" type="button" onclick="event.stopPropagation(); togglePackageDetails(this);">View Details</button>
+                </div>
+                <div class="package-details-wrap"><div class="package-details"><p>Simple online presence.</p></div></div>
               </div>
-            </div>
-            <div class="package-card" data-package-id="advanced">
-              <div class="package-summary">
-                <div class="package-media">ADV</div>
-                <div class="package-name">Advanced</div>
-                <div class="package-price">$4,500</div>
-                <div style="font-size:0.85rem; opacity:0.7;">10 Pages Included<br>Integrations & Systems</div>
+
+              <div class="package-card" data-package-id="standard"
+                   onclick="selectPackage('standard','Standard Website',2500,5,400,175,this)">
+                <div class="package-summary">
+                  <div class="package-media"><div class="package-media-placeholder">Standard</div></div>
+                  <div>
+                    <div class="package-name">Standard</div>
+                    <div class="package-price">$2,500</div>
+                    <div style="font-size:0.85rem; opacity:0.7; margin-top:5px;">5 pages · Business Growth</div>
+                  </div>
+                  <button class="package-expand" type="button" onclick="event.stopPropagation(); togglePackageDetails(this);">View Details</button>
+                </div>
+                <div class="package-details-wrap"><div class="package-details"><p>Great for Restaurants, Contractors.</p></div></div>
+              </div>
+
+              <div class="package-card" data-package-id="advanced"
+                   onclick="selectPackage('advanced','Advanced Website',4500,10,375,200,this)">
+                <div class="package-summary">
+                  <div class="package-media"><div class="package-media-placeholder">Advanced</div></div>
+                  <div>
+                    <div class="package-name">Advanced</div>
+                    <div class="package-price">$4,500</div>
+                    <div style="font-size:0.85rem; opacity:0.7; margin-top:5px;">10 pages · Integrations</div>
+                  </div>
+                  <button class="package-expand" type="button" onclick="event.stopPropagation(); togglePackageDetails(this);">View Details</button>
+                </div>
+                <div class="package-details-wrap"><div class="package-details"><p>For E-commerce, Hotels, Complex Logic.</p></div></div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="collapsible">
-      <button class="collapsible-header">
-        <div class="collapsible-title">2. Build Sitemap</div>
-        <div id="pageCountDisplay" style="font-size:0.9rem; color:var(--text-muted); margin-right:auto; margin-left:20px;"></div>
-        <span class="collapsible-chevron">▾</span>
-      </button>
-      <div class="collapsible-body">
-        <div class="collapsible-inner">
-          
-          <label>Add Pages (Type or Select)</label>
-          <div style="display:flex; gap:10px;">
-            <input type="text" id="pageInput" placeholder="Type a page name...">
-            <button class="btn btn-primary" id="addPageBtn" style="padding:10px 25px;">Add</button>
+      <section id="pageBuilderSection" class="collapsible hidden collapsed" data-collapsible data-key="step2-pages">
+        <button class="collapsible-header" type="button" data-collapsible-header>
+          <div>
+            <div class="collapsible-title">Page Structure</div>
+            <div class="collapsible-subtitle">Define your sitemap.</div>
           </div>
+          <div class="collapsible-chevron">▾</div>
+        </button>
+        <div class="collapsible-body">
+          <div class="collapsible-inner">
+            <div class="form-grid">
+              <div class="full-width">
+                <label>What Industry are you in?</label>
+                <div class="page-builder-search">
+                  <input type="text" id="industryInput" placeholder="Type industry (e.g. Restaurant, Hotel, Shop) and hit Enter..." />
+                  <button class="btn btn-primary" style="padding: 16px 25px;" onclick="generateSuggestions(document.getElementById('industryInput').value)">Search</button>
+                </div>
+                
+                <div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted);">Suggested Pages:</div>
+                <div class="industry-chips" id="suggestionChips">
+                  <span style="opacity:0.5; font-style:italic; font-size:0.8rem;">Type an industry above to see suggestions...</span>
+                </div>
 
-          <div class="added-pages-list" id="addedPagesContainer">
+                <label>Your Sitemap (<span id="pageCountDisplay">0/0</span>)</label>
+                <div class="active-pages-list" id="activePagesList">
+                  </div>
+                <div id="pageLimitWarning" class="page-limit-warning"></div>
+
+                <div style="margin-top:20px; display:flex; gap:10px;">
+                   <input type="text" id="customPageInput" placeholder="Add custom page name..." />
+                   <button class="btn btn-secondary" onclick="addPage()">Add</button>
+                </div>
+              </div>
             </div>
-
-          <label style="margin-top:20px;">Suggestions for your Industry & Package</label>
-          <div class="suggestion-box" id="pageSuggestions">
-            </div>
-
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="step-nav-buttons">
-      <button class="btn btn-secondary" onclick="nextStep(1)">&larr; Back</button>
-      <button class="btn btn-primary" onclick="nextStep(3)">Next: Planning &rarr;</button>
+      <section id="brandingSection" class="collapsible collapsed" data-collapsible data-key="step2-branding">
+        <button class="collapsible-header" type="button" data-collapsible-header>
+          <div>
+            <div class="collapsible-title">Branding</div>
+            <div class="collapsible-subtitle">Materials & Design Assets</div>
+          </div>
+          <div class="collapsible-chevron">▾</div>
+        </button>
+
+        <div class="collapsible-body">
+          <div class="collapsible-inner">
+            <div class="notice" id="brandingLockedNotice" style="text-align:center; opacity:0.7;">
+              Please select a website package above to unlock branding.
+            </div>
+            <div id="brandingUnlocked" class="hidden">
+              <div class="package-card" id="brand-kit-bar" onclick="toggleBrandKit(this)" style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div style="font-family:var(--font-heading); font-size:1.4rem;">Full Brand Kit</div>
+                    <div style="font-size:0.9rem; opacity:0.8;">Logo Suite, Typography, Colors</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <span class="og-price" style="text-decoration:line-through; font-size:0.8rem; opacity:0.6;">$500</span>
+                    <div class="final-price" style="font-size:1.4rem; color:var(--accent-blue); font-weight:700;">$500</div>
+                    <span class="discount-label" style="font-size:0.6rem; letter-spacing:1px; display:none; color:var(--accent-blue);">BUNDLED</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="step-nav-buttons">
+        <button class="btn btn-secondary" onclick="nextStep(1)">&larr; Back</button>
+        <button class="btn btn-primary" onclick="nextStep(3)">Next: Plan &rarr;</button>
+      </div>
+
     </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
