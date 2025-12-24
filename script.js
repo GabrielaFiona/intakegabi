@@ -1,4 +1,4 @@
-// --- STATE MANAGEMENT ---
+=// --- STATE MANAGEMENT ---
 const state = {
   package: null,
   brandKit: false,
@@ -7,7 +7,8 @@ const state = {
   addons: [],
   pagePlans: {},
   brandingProvided: null,
-  customBranding: { active: false, name: "", price: 0 }
+  customBranding: { active: false, name: "", price: 0 },
+  advancedNotes: ""
 };
 
 // Store files in memory
@@ -313,17 +314,126 @@ function renderBasicPlan(container) {
   });
 }
 
-// --- NEW STANDARD PLAN (Step 3) ---
+// --- STANDARD PLAN (Package 2) ---
 function renderStandardPlan(container) {
   const intro = `<div style="text-align:center; margin-bottom:30px;"><p>Sketch your layout for Mobile and Desktop views.</p></div>`;
   container.insertAdjacentHTML('beforeend', intro);
 
+  renderSharedCanvasCards(container); // Reusable logic
+  
+  // Add "Download All" Button
+  const downloadAllBtn = `
+    <button class="btn-download-all" onclick="downloadAllProjectAssets()">
+      Download Full Project Assets
+    </button>
+  `;
+  container.insertAdjacentHTML('beforeend', downloadAllBtn);
+}
+
+// --- ADVANCED PLAN (Package 3 - NEW) ---
+function renderAdvancedPlan(container) {
+  // 1. Business Flowchart Section
+  const flowchartHtml = `
+    <div class="plan-card expanded">
+      <div class="plan-card-header">
+        <div class="plan-card-title-group">
+          <span style="font-size:1.5rem">⚡</span>
+          <span>Business Logic & Integrations Flow</span>
+        </div>
+      </div>
+      <div class="plan-card-body">
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:20px;">
+          Map how your website pages connect to your business tools (Payments, Email, Booking). 
+          Use the toolbar to select a tool, then click the whiteboard to stamp it.
+        </p>
+        
+        <div class="mockup-toolbar">
+           <button class="tool-btn active" onclick="setTool('flowGroup', 'pencil', this)" title="Draw Connections">✏️</button>
+           <button class="tool-btn" onclick="setTool('flowGroup', 'box', this)" title="Process Node">⬜</button>
+           <button class="tool-btn" onclick="setTool('flowGroup', 'diamond', this)" title="Decision / Action">◇</button>
+           <button class="tool-btn" onclick="setTool('flowGroup', 'circle', this)" title="Start / End">⭕</button>
+           <button class="tool-btn" onclick="setTool('flowGroup', 'text', this)" title="Label">T</button>
+           <button class="tool-btn" onclick="setTool('flowGroup', 'eraser', this)" title="Eraser">🧹</button>
+           <div style="width:1px; height:20px; background:var(--border-light); margin:0 10px;"></div>
+           <button class="tool-btn tool-btn-danger" onclick="resetCanvasGroup('flowchartCanvas')">Reset Map</button>
+        </div>
+
+        <div class="flowchart-container-wrap">
+          <div class="flowchart-sidebar">
+            <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:var(--accent-blue);">Quick Stamps</span>
+            ${state.pages.map(p => `<div class="flowchart-stamp" onclick="stampTextOnCanvas('flowchartCanvas', '${p}')">${p}</div>`).join('')}
+            <div class="flowchart-stamp" onclick="stampTextOnCanvas('flowchartCanvas', 'Payment')">Payment</div>
+            <div class="flowchart-stamp" onclick="stampTextOnCanvas('flowchartCanvas', 'Email')">Email Auto</div>
+            <div class="flowchart-stamp" onclick="stampTextOnCanvas('flowchartCanvas', 'Booking')">Booking</div>
+          </div>
+          <canvas id="flowchartCanvas" class="flowchart-canvas" width="700" height="500"></canvas>
+        </div>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', flowchartHtml);
+
+  // Initialize Flowchart Canvas
+  setTimeout(() => {
+    initCanvas('flowchartCanvas', 'flowGroup');
+    // Simple logic to persist flowchart if needed could go here
+  }, 100);
+
+  // 2. Page Planner with Strategy Fields
+  const intro = `<div style="text-align:center; margin:40px 0 30px 0;"><h2>Deep Dive: Page Planning</h2><p>Define strategy, SEO, and Layout for every page.</p></div>`;
+  container.insertAdjacentHTML('beforeend', intro);
+
+  renderSharedCanvasCards(container, true); // True = include strategy fields
+
+  // Add "Download All" Button
+  const downloadAllBtn = `
+    <button class="btn-download-all" onclick="downloadAllProjectAssets()">
+      Download Full Project Assets
+    </button>
+  `;
+  container.insertAdjacentHTML('beforeend', downloadAllBtn);
+}
+
+
+// --- REUSABLE CANVAS CARD LOGIC (Used by Standard & Advanced) ---
+function renderSharedCanvasCards(container, isAdvanced = false) {
   state.pages.forEach((page, index) => {
     const mobileId = `cvs-m-${index}`;
     const desktopId = `cvs-d-${index}`;
     const groupName = `group-${index}`;
     const fileListId = `file-list-${index}`;
     const orderOptions = state.pages.map((_, i) => `<option value="${i}" ${i === index ? 'selected' : ''}>Order: ${i + 1}</option>`).join('');
+
+    // Strategy Fields (Advanced Only)
+    let strategyHtml = '';
+    if (isAdvanced) {
+      const plan = state.pagePlans[page] || {};
+      strategyHtml = `
+        <div class="adv-meta-grid">
+          <div>
+            <label>SEO Focus Keyword</label>
+            <input type="text" placeholder="e.g. 'Best Pizza Newport'" 
+              value="${plan.seo || ''}" onchange="savePageMeta('${page}', 'seo', this.value)">
+          </div>
+          <div>
+            <label>Conversion Action</label>
+            <select onchange="savePageMeta('${page}', 'conversion', this.value)">
+              <option value="" disabled ${!plan.conversion ? 'selected' : ''}>Select Goal...</option>
+              <option value="Buy Now" ${plan.conversion === 'Buy Now' ? 'selected' : ''}>Buy Now / Checkout</option>
+              <option value="Book Call" ${plan.conversion === 'Book Call' ? 'selected' : ''}>Book Appointment</option>
+              <option value="Contact Form" ${plan.conversion === 'Contact Form' ? 'selected' : ''}>Fill Contact Form</option>
+              <option value="Subscribe" ${plan.conversion === 'Subscribe' ? 'selected' : ''}>Newsletter Signup</option>
+              <option value="Inform" ${plan.conversion === 'Inform' ? 'selected' : ''}>Inform / Edu</option>
+            </select>
+          </div>
+          <div>
+            <label>Integration Needs</label>
+            <input type="text" placeholder="e.g. Stripe, Calendly"
+              value="${plan.integrations || ''}" onchange="savePageMeta('${page}', 'integrations', this.value)">
+          </div>
+        </div>
+      `;
+    }
 
     const html = `
       <div class="plan-card" id="card-${index}">
@@ -340,6 +450,8 @@ function renderStandardPlan(container) {
         </div>
         <div class="plan-card-body">
           
+          ${strategyHtml}
+
           <div class="mockup-toolbar" id="toolbar-${index}">
             <button class="tool-btn active" title="Pencil" onclick="setTool('${groupName}', 'pencil', this)">✏️</button>
             <button class="tool-btn" title="Box" onclick="setTool('${groupName}', 'box', this)">⬜</button>
@@ -365,8 +477,8 @@ function renderStandardPlan(container) {
 
           <div class="plan-footer">
             <div class="plan-notes-area">
-              <label>Layout Notes</label>
-              <textarea oninput="savePageNote('${page}', this.value)" placeholder="Describe specific functionality or content...">${state.pagePlans[page]?.notes || ''}</textarea>
+              <label>Layout & Content Notes</label>
+              <textarea oninput="savePageNote('${page}', this.value)" placeholder="Describe specific content, copy, or logic for this page...">${state.pagePlans[page]?.notes || ''}</textarea>
             </div>
             <div class="plan-files-area">
               <label>Page Assets</label>
@@ -396,14 +508,6 @@ function renderStandardPlan(container) {
       renderPageFileList(page, fileListId);
     }, 100);
   });
-
-  // ADD "DOWNLOAD ALL" BUTTON AT BOTTOM
-  const downloadAllBtn = `
-    <button class="btn-download-all" onclick="downloadAllProjectAssets()">
-      Download Full Project Assets
-    </button>
-  `;
-  container.insertAdjacentHTML('beforeend', downloadAllBtn);
 }
 
 // --- FILE UPLOAD LOGIC ---
@@ -563,39 +667,17 @@ function restoreCanvasData(page, mId, dId) {
   }
 }
 
-function renderAdvancedPlan(container) {
-  const html = `
-    <div class="integration-row">
-      <div class="plan-card">
-        <div class="plan-card-header">System Flowchart</div>
-        <div class="plan-card-body">
-          <div class="mockup-toolbar">
-            <button class="tool-btn" onclick="setTool('advancedGroup', 'box')">⬜</button>
-            <button class="tool-btn" onclick="setTool('advancedGroup', 'line')">🔗</button>
-            <button class="tool-btn" onclick="resetCanvasGroup('advancedCanvas')">🗑️</button>
-          </div>
-          <canvas id="advancedCanvas" class="canvas-container" style="background:#0f1322; width:100%; height:500px;" width="800" height="500"></canvas>
-        </div>
-      </div>
-      <div class="integration-list">
-        <h4>Integrations</h4>
-        <div class="integration-item">Stripe / Payments</div>
-        <div class="integration-item">Mailchimp</div>
-        <textarea rows="10" oninput="saveAdvancedNotes(this.value)">${state.advancedNotes || ''}</textarea>
-      </div>
-    </div>
-  `;
-  container.insertAdjacentHTML('beforeend', html);
-  setTimeout(() => initCanvas('advancedCanvas', 'advancedGroup'), 100);
-}
-
 function savePageNote(pageName, text) {
   if (!state.pagePlans[pageName]) state.pagePlans[pageName] = {};
   state.pagePlans[pageName].notes = text;
   saveState();
 }
 
-function saveAdvancedNotes(text) { state.advancedNotes = text; saveState(); }
+function savePageMeta(pageName, field, value) {
+  if (!state.pagePlans[pageName]) state.pagePlans[pageName] = {};
+  state.pagePlans[pageName][field] = value;
+  saveState();
+}
 
 // --- CANVAS TOOLS ---
 const canvasState = {}; 
@@ -608,6 +690,32 @@ function setTool(groupName, tool, btn) {
     parent.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   }
+}
+
+// Special helper to "Stamp" text (like page names) onto the flowchart
+function stampTextOnCanvas(canvasId, text) {
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  // Randomize position slightly so they don't stack perfectly
+  const x = 50 + Math.random() * 50;
+  const y = 50 + Math.random() * 50;
+  
+  // Draw Box
+  ctx.fillStyle = 'rgba(44, 166, 224, 0.1)';
+  ctx.strokeStyle = '#2CA6E0';
+  ctx.lineWidth = 2;
+  const width = 120;
+  const height = 50;
+  ctx.fillRect(x, y, width, height);
+  ctx.strokeRect(x, y, width, height);
+  
+  // Draw Text
+  ctx.fillStyle = '#fff';
+  ctx.font = '14px Montserrat';
+  ctx.textAlign = 'center';
+  ctx.fillText(text, x + (width/2), y + (height/2) + 5);
 }
 
 function initCanvas(canvasId, groupName) {
@@ -662,15 +770,27 @@ function initCanvas(canvasId, groupName) {
     const endY = e.offsetY;
     const tool = canvasState[groupName].tool;
     ctx.lineWidth = 3; ctx.strokeStyle = '#2CA6E0'; ctx.globalCompositeOperation = 'source-over';
+    
+    const w = endX - startX;
+    const h = endY - startY;
+
     if (tool === 'box' || tool === 'rect') {
-      const w = endX - startX;
-      const h = (tool === 'box') ? w : (endY - startY); 
-      ctx.rect(startX, startY, w, h); ctx.fill(); ctx.stroke();
+      const hFinal = (tool === 'box') ? w : h; 
+      ctx.rect(startX, startY, w, hFinal); ctx.fill(); ctx.stroke();
     } else if (tool === 'circle') {
-      const radius = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+      const radius = Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2));
       ctx.beginPath(); ctx.arc(startX, startY, radius, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
     } else if (tool === 'triangle') {
-      ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(endX, endY); ctx.lineTo(startX - (endX - startX), endY); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(endX, endY); ctx.lineTo(startX - w, endY); ctx.closePath(); ctx.fill(); ctx.stroke();
+    } else if (tool === 'diamond') {
+       // Simple diamond shape for Flowchart
+       ctx.beginPath();
+       ctx.moveTo(startX + w/2, startY); // Top
+       ctx.lineTo(endX, startY + h/2);   // Right
+       ctx.lineTo(startX + w/2, endY);   // Bottom
+       ctx.lineTo(startX, startY + h/2); // Left
+       ctx.closePath();
+       ctx.fill(); ctx.stroke();
     }
   });
 }
