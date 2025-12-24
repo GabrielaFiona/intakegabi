@@ -180,27 +180,27 @@ function initCollapsibles() {
     const header = section.querySelector('[data-collapsible-header]');
     if (!header) return;
 
+    // Prevent adding multiple listeners if re-initialized
+    if (header.hasAttribute('data-has-listener')) return;
+    header.setAttribute('data-has-listener', 'true');
+
     const key = section.getAttribute('data-key') || section.id;
     const storageKey = key ? `collapsible:${key}` : null;
 
+    // Restore state from local storage
     if (storageKey) {
       const saved = localStorage.getItem(storageKey);
       if (saved === 'collapsed') {
         section.classList.add('collapsed');
-        header.setAttribute('aria-expanded', 'false');
       } else if (saved === 'open') {
         section.classList.remove('collapsed');
-        header.setAttribute('aria-expanded', 'true');
       }
     }
 
-    if (!header.hasAttribute('aria-expanded')) {
-      header.setAttribute('aria-expanded', section.classList.contains('collapsed') ? 'false' : 'true');
-    }
-
-    header.addEventListener('click', () => {
+    // Click handler to toggle state
+    header.addEventListener('click', (e) => {
+      e.preventDefault(); // Prevent weird form submissions if any
       const collapsed = section.classList.toggle('collapsed');
-      header.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
       if (storageKey) localStorage.setItem(storageKey, collapsed ? 'collapsed' : 'open');
     });
   });
@@ -214,6 +214,7 @@ function togglePackageDetails(buttonEl) {
 
   const expanded = card.classList.toggle('expanded');
   buttonEl.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  buttonEl.textContent = expanded ? 'Close Details' : 'View Details';
 }
 
 // Expose globals
