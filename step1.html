@@ -56,30 +56,46 @@
   <div class="container">
     <div id="step-1" class="step-section active">
 
-      <div class="welcome-grid">
-        <div class="welcome-text">
+      <div class="roadmap-grid">
+        <div class="roadmap-left">
           <h1>Let's build your roadmap.</h1>
-          <p>My goal for this call is to get clear on your vision and create a plan that feels simple, strategic, and completely "you." No jargon, no confusion—just a clear path forward.</p>
+          <p>My goal for this call is to get clear on your vision and create a plan that feels simple, strategic, and completely "you."</p>
+          <p>We will walk through 4 steps to define your needs, calculate the investment, and create a blueprint we can start building immediately.</p>
         </div>
-        <div class="timeline">
-          <div class="timeline-item">
-            <h4>1. Context</h4>
-            <p>Where are you now, and where do you want to be?</p>
+        <div class="roadmap-right">
+          <div class="r-step">
+            <div class="r-dot"></div>
+            <div class="r-content">
+              <h4>1. Goals</h4>
+              <p>Where are you now, and where do you want to be?</p>
+            </div>
           </div>
-          <div class="timeline-item">
-            <h4>2. Strategy</h4>
-            <p>Selecting the exact features you need.</p>
+          <div class="r-step">
+            <div class="r-dot"></div>
+            <div class="r-content">
+              <h4>2. Structure</h4>
+              <p>Selecting the exact features and package you need.</p>
+            </div>
           </div>
-          <div class="timeline-item">
-            <h4>3. Action</h4>
-            <p>Reviewing investment and timeline.</p>
+          <div class="r-step">
+            <div class="r-dot"></div>
+            <div class="r-content">
+              <h4>3. Plan</h4>
+              <p>Mapping out the content and layout for every page.</p>
+            </div>
+          </div>
+          <div class="r-step">
+            <div class="r-dot"></div>
+            <div class="r-content">
+              <h4>4. Finalize</h4>
+              <p>Reviewing scope, timeline, and deposit.</p>
+            </div>
           </div>
         </div>
       </div>
-
       <div class="intake-section">
         
-        <section class="collapsible" data-collapsible data-key="step1-client-essentials">
+        <section class="collapsible collapsed" data-collapsible data-key="step1-client-essentials">
           <button class="collapsible-header" type="button" data-collapsible-header>
             <div>
               <div class="collapsible-title">Client Essentials</div>
@@ -120,7 +136,7 @@
           </div>
         </section>
 
-        <section class="collapsible" data-collapsible data-key="step1-website-type">
+        <section class="collapsible collapsed" data-collapsible data-key="step1-website-type">
           <button class="collapsible-header" type="button" data-collapsible-header>
             <div>
               <div class="collapsible-title">Website Type</div>
@@ -167,7 +183,6 @@
 
   <script src="script.js"></script>
   <script>
-    /* Kept exactly the same to preserve functionality */
     document.addEventListener('DOMContentLoaded', function () {
       const inputs = document.querySelectorAll('.save-me');
       inputs.forEach(input => {
